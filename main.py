@@ -10,7 +10,7 @@ import datetime
 
 
 def main(test_name: str):
-    timestamp = datetime.datetime.now().strftime('%d-%m-%Y_%H:%M:%S')
+    timestamp = datetime.datetime.now().strftime('%d_%m_%Y_%H_%M_%S')
 
     code_filepath = './golden/' + test_name + '.asm'
     binary_filepath = './output/binaries/' + test_name + '.bin'
@@ -54,4 +54,4 @@ def main(test_name: str):
 
 
 if __name__ == '__main__':
-    main("hello_user")
+    main("prob1")
