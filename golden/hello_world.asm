@@ -1,5 +1,5 @@
 .data
-    text "Hello, World!"
+    text "Hello, World!\n"
 
 .code
     push text

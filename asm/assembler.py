@@ -1,5 +1,5 @@
 from asm.translator import Translator
-from asm.instruction import Instruction, OpCode, OpType, get_opcode_by_name
+from asm.instruction import Instruction, OpType, get_opcode_by_name
 
 
 class Assembler:
@@ -174,20 +174,20 @@ class Assembler:
 
                 instructions_counter += 1
 
-        with open(code_file[:-4] + "_mid.asm", "w") as file:
-            text = ".data\n"
-            for variable in variables.values():
-                text += f"{variable['address']} {variable['init_value']}\n"
-
-            text += f".code\n"
-            for instruction in instructions:
-                if instruction.operand is not None:
-                    text += f"{instruction.opcode} {instruction.operand}\n"
-
-                else:
-                    text += f"{instruction.opcode}\n"
-
-            file.write(text)
+        # with open(code_file[:-4] + "_mid.asm", "w") as file:
+        #     text = ".data\n"
+        #     for variable in variables.values():
+        #         text += f"{variable['address']} {variable['init_value']}\n"
+        #
+        #     text += f".code\n"
+        #     for instruction in instructions:
+        #         if instruction.operand is not None:
+        #             text += f"{instruction.opcode} {instruction.operand}\n"
+        #
+        #         else:
+        #             text += f"{instruction.opcode}\n"
+        #
+        #     file.write(text)
 
         binary = self.translator.asm_to_binary(variables, instructions)
 

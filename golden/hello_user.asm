@@ -1,7 +1,7 @@
 .data
-    name_request "What is your name?"
+    name_request "What is your name?\n"
     welcome_beginning "Hello, "
-    exclamation_point "!"
+    exclamation_point "!\n"
 
 .code
     push name_request

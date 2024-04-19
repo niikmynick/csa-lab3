@@ -32,13 +32,13 @@ class OpCode(int, Enum):
         return str(self)
 
 
-class OpType(Enum):
+class OpType(int, Enum):
     ADDRESS = 0x01
     VALUE = 0x02
     NOPE = 0x03
 
 
-class DataType(Enum):
+class DataType(int, Enum):
     INT = 0x01
     CHAR = 0x02
     STRING = 0x03
@@ -52,7 +52,13 @@ class Instruction:
         self.data_type = data_type
 
     def __str__(self):
-        return f"{self.opcode} {self.operand_type} {self.operand}" if self.operand is not None else f"{self.opcode}"
+        match self.operand_type:
+            case OpType.VALUE:
+                return f"{self.opcode.name} {self.operand} - {hex(self.opcode)[2:]}{hex(self.operand_type)[2:]}{hex(self.operand)[2:]}"
+            case OpType.ADDRESS:
+                return f"{self.opcode.name} ${self.operand} - {hex(self.opcode)[2:]}{hex(self.operand_type)[2:]}{hex(self.operand)[2:]}"
+            case OpType.NOPE:
+                return f"{self.opcode.name} - {hex(self.opcode)[2:]}{hex(self.operand_type)[2:]}"
 
     def __repr__(self):
         return str(self)
@@ -68,6 +74,4 @@ def get_opcode_by_name(name: str) -> OpCode | None:
 if __name__ == "__main__":
     print(Instruction(opcode=OpCode.PUSH, operand=0x01, operand_type=OpType.VALUE))
     print(Instruction(opcode=OpCode.PUSH, operand=0x01, operand_type=OpType.ADDRESS))
-    print(Instruction(opcode=OpCode.PUSH))
-
-    print(type(get_opcode_by_name("push")))
+    print(Instruction(opcode=OpCode.PUSH, operand=None, operand_type=OpType.NOPE))
