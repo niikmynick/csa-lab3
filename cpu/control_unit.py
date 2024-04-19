@@ -2,10 +2,15 @@ from cpu.stack import Stack
 from cpu.alu import ALU
 from memory.memory import Memory
 from asm.instruction import Instruction, OpCode, OpType
+from io_managers.logger import Logger
 
 
 class ControlUnit:
-    def __init__(self, instruction_memory: Memory, data_memory: Memory, input_address: int, output_address: int, base_pointer: int = 0):
+    def __init__(self, instruction_memory: Memory, data_memory: Memory,
+                 input_address: int, output_address: int,
+                 base_pointer: int = 0,
+                 logger: Logger = None
+                 ):
         self._time: int = 0
         self._instruction_counter: int = 0
         self.data_stack = Stack()
@@ -14,6 +19,8 @@ class ControlUnit:
 
         self.instructions_memory = instruction_memory
         self.data_memory = data_memory
+
+        self.logger = logger
 
         self.input_address = input_address
         self.output_address = output_address
@@ -45,9 +52,9 @@ class ControlUnit:
 
                 elif optype == OpType.ADDRESS:
                     value = self.data_memory.read(self.base_pointer + operand)
-                    for symbol in value[::-1]:
-                        self.data_stack.push(symbol)
-                    # self.data_stack.push(value)
+                    # for symbol in value[::-1]:
+                    #     self.data_stack.push(symbol)
+                    self.data_stack.push(value)
 
             case OpCode.POP:
                 self.data_stack.pop()
@@ -154,8 +161,10 @@ class ControlUnit:
         while True:
             command_pointer = self.instructions_stack.pop()
             command = self.instructions_memory.read(command_pointer)
+
+            self.logger.log(f"{command_pointer} - {command}")
+
             result = self.handle_command(command)
-            # print(command, self.data_stack)
             self.tick()
 
             if not result:
