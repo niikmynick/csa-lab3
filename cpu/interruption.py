@@ -1,0 +1,20 @@
+from enum import Enum
+
+
+class InterruptionType(Enum):
+    INPUT = 0
+    OUTPUT = 1
+    HALT = 2
+    ERROR = 3
+
+
+class Interruption:
+    def __init__(self, interruption_type: InterruptionType, message: str = None):
+        self.interruption_type = interruption_type
+        self.message = message
+
+    def __str__(self):
+        return f"Interruption: {self.interruption_type.name} {self.message if self.message is not None else ''}"
+
+    def __repr__(self):
+        return str(self)
