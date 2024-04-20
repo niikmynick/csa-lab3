@@ -16,7 +16,7 @@ def main(test_name: str):
     binary_filepath = './output/binaries/' + test_name + '.bin'
 
     result_filepath = './output/results/result_' + test_name + '_' + timestamp + '.txt'
-    log_filepath = './output/logs/log_' + test_name + '_' + timestamp + '.txt'
+    log_filepath = './output/logs/log_' + test_name + '_' + timestamp + '.log'
 
     # init memory
     instruction_memory = Memory()

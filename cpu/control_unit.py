@@ -3,7 +3,7 @@ from cpu.alu import ALU
 from cpu.interruption import Interruption, InterruptionType
 from memory.memory import Memory
 from asm.instruction import Instruction, OpCode, OpType
-from io_managers.logger import Logger
+from io_managers.logger import Logger, LogLevel, Place
 
 
 class ControlUnit:
@@ -46,16 +46,23 @@ class ControlUnit:
         return self._instruction_counter
 
     def handle_interruption(self):
+        self.logger.log(LogLevel.DEBUG, Place.INTER, f"Have {self._interruptions_stack.size()} interruptions")
+
         while not self._interruptions_stack.is_empty():
-            interruption = self._interruptions_stack.pop()
+            interruption: Interruption = self._interruptions_stack.pop()
             self._interruption_flag = True
 
-            # self.logger.log(f"{interruption}")
+            self.logger.log(LogLevel.DEBUG, Place.INTER, f"Processing {interruption}")
 
             match interruption.interruption_type:
                 case InterruptionType.INPUT:
-                    self.data_memory.write(self.output_address, interruption.message)
+                    if interruption.message is not None:
+                        self.data_memory.write(self.output_address, interruption.message)
+
+                    self.logger.log(LogLevel.INFO, Place.INTER, "Reading input")
                     value = self.data_memory.read(self.input_address)
+
+                    self.logger.log(LogLevel.INFO, Place.INTER, f"Read value: {value}")
 
                     self.data_stack.push(None)
                     if value.isnumeric():
@@ -75,6 +82,8 @@ class ControlUnit:
                         self._interruptions_stack.push(interruption_error)
                         continue
 
+                    self.logger.log(LogLevel.INFO, Place.INTER, "Writing output")
+
                     while True:
                         symbol = self.data_stack.pop()
                         if symbol is None:
@@ -84,9 +93,12 @@ class ControlUnit:
 
                 case InterruptionType.HALT:
                     self._exit_flag = True
+                    self.logger.log(LogLevel.INFO, Place.INTER, "Halting")
                     break
 
                 case InterruptionType.ERROR:
+                    self.logger.log(LogLevel.ERROR, Place.INTER, f"Error: {interruption.message}")
+
                     interruption_halt = Interruption(InterruptionType.HALT)
                     self._interruptions_stack.push(interruption_halt)
 
@@ -101,6 +113,8 @@ class ControlUnit:
         opcode = instruction.opcode
         operand = instruction.operand
         optype = instruction.operand_type
+
+        self.logger.log(LogLevel.INFO, Place.INSTR, f"Processing {opcode.name} {optype.name if optype != OpType.NOPE else ''} {operand if operand is not None else ''}")
 
         match opcode:
             case OpCode.PUSH:
@@ -129,6 +143,8 @@ class ControlUnit:
                 b = self.data_stack.pop()
                 a = self.data_stack.pop()
 
+                self.logger.log(LogLevel.DEBUG, Place.ALU, f"Comparing {a} and {b}")
+
                 self.alu.compare(a, b)
 
             case OpCode.JUMP:
@@ -156,6 +172,8 @@ class ControlUnit:
                 b = self.data_stack.pop()
                 a = self.data_stack.pop()
 
+                self.logger.log(LogLevel.DEBUG, Place.ALU, f"Adding {a} and {b}")
+
                 self.alu.add(a, b)
                 self.data_stack.push(self.alu.result)
 
@@ -163,12 +181,16 @@ class ControlUnit:
                 b = self.data_stack.pop()
                 a = self.data_stack.pop()
 
+                self.logger.log(LogLevel.DEBUG, Place.ALU, f"Subtracting {a} and {b}")
+
                 self.alu.sub(a, b)
                 self.data_stack.push(self.alu.result)
 
             case OpCode.MUL:
                 b = self.data_stack.pop()
                 a = self.data_stack.pop()
+
+                self.logger.log(LogLevel.DEBUG, Place.ALU, f"Multiplying {a} and {b}")
 
                 self.alu.mul(a, b)
                 self.data_stack.push(self.alu.result)
@@ -181,17 +203,23 @@ class ControlUnit:
                     interruption = Interruption(InterruptionType.ERROR, "Division by zero")
                     self._interruptions_stack.push(interruption)
                 else:
+                    self.logger.log(LogLevel.DEBUG, Place.ALU, f"Dividing {a} and {b}")
+
                     self.alu.div(a, b)
                     self.data_stack.push(self.alu.result)
 
             case OpCode.INC:
                 a = self.data_stack.pop()
 
+                self.logger.log(LogLevel.DEBUG, Place.ALU, f"Incrementing {a}")
+
                 self.alu.add(a, 1)
                 self.data_stack.push(self.alu.result)
 
             case OpCode.DEC:
                 a = self.data_stack.pop()
+
+                self.logger.log(LogLevel.DEBUG, Place.ALU, f"Decrementing {a}")
 
                 self.alu.sub(a, 1)
                 self.data_stack.push(self.alu.result)
@@ -214,6 +242,10 @@ class ControlUnit:
         self.increment_instruction_counter()
 
     def run(self):
+        self.logger.log(LogLevel.INFO, Place.SYSTEM, "Starting execution")
+        self.logger.log(LogLevel.DEBUG, Place.SYSTEM, f"Initial state: {self}")
+        self.logger.log(LogLevel.DEBUG, Place.SYSTEM, f"Instructions memory: {self.instructions_memory}")
+
         while True:
             self.handle_interruption()
 
@@ -225,7 +257,7 @@ class ControlUnit:
                 self.instructions_stack.push(command)
                 self._command_pointer += 1
 
-            self.logger.log(f"{self.get_instruction_counter()} - {self.instructions_stack.peek()}")
+            self.logger.log(LogLevel.DEBUG, Place.SYSTEM, str(self))
 
             self.handle_command()
 
