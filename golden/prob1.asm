@@ -94,6 +94,5 @@
     finish:
         push sum
         write
-        pop
 
         halt

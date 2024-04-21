@@ -4,6 +4,5 @@
 .code
     push text
     write
-    pop
 
     halt

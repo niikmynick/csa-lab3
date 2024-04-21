@@ -24,8 +24,7 @@ class Memory:
 
         cell = self._memory.get(key)
 
-        if isinstance(cell, OutputManager):
-            raise ValueError("Cannot read from output manager")
+        assert not isinstance(cell, OutputManager), "Cannot read from output manager"
 
         if isinstance(cell, InputManager):
             cell.read()
@@ -40,8 +39,7 @@ class Memory:
 
         cell = self._memory.get(key)
 
-        if isinstance(cell, InputManager):
-            raise ValueError("Cannot write to input manager")
+        assert not isinstance(cell, InputManager), "Cannot write to input manager"
 
         if isinstance(cell, OutputManager):
             cell.write(str(value))
