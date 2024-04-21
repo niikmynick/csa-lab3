@@ -106,8 +106,10 @@ class Assembler:
                     int_value = int(arg)
                     size = len(hex(int_value)) - 2
                     arg_type = "int"
-                    value: dict[str, int | str] = \
+                    int_arg_value: dict[str, int | str] = \
                         {"init_value": int_value, "type": arg_type, "address": memory_counter, "size": size}
+
+                    variables[name] = int_arg_value
 
                 else:
                     str_value = arg[1:-1]
@@ -117,10 +119,10 @@ class Assembler:
                     else:
                         size = len(str_value)
                     arg_type = "string"
-                    value: dict[str, int | str] = \
+                    str_arg_value: dict[str, int | str] = \
                         {"init_value": str_value, "type": arg_type, "address": memory_counter, "size": size}
 
-                variables[name] = value
+                    variables[name] = str_arg_value
 
                 memory_counter += size
 
@@ -150,27 +152,28 @@ class Assembler:
                 continue
 
             else:
-                elements: list[str] = line.split(" ", 1)
-                opcode: OpCode = get_opcode_by_name(elements[0])
+                instruction_elements: list[str] = line.split(" ", 1)
+                opcode: OpCode = get_opcode_by_name(instruction_elements[0])
                 optype: OpType = OpType.VALUE
+                instruction_operand: int
 
-                if len(elements) == 1:
+                if len(instruction_elements) == 1:
                     instructions.append(Instruction(opcode))
                     instructions_counter += 1
                     continue
 
-                elif elements[1] in variables:
-                    instruction_operand: int = int(variables[elements[1]]["address"])
+                elif instruction_elements[1] in variables:
+                    instruction_operand = int(variables[instruction_elements[1]]["address"])
                     optype = OpType.ADDRESS
 
-                elif elements[1] in labels:
-                    assert elements[0] in self.jump_instructions, \
-                        f"Label {elements[1]} is not allowed in instruction {elements[0]}"
-                    instruction_operand: int = labels[elements[1]]
+                elif instruction_elements[1] in labels:
+                    assert instruction_elements[0] in self.jump_instructions, \
+                        f"Label {instruction_elements[1]} is not allowed in instruction {instruction_elements[0]}"
+                    instruction_operand = labels[instruction_elements[1]]
                     optype = OpType.ADDRESS
 
                 else:
-                    instruction_operand: int = int(elements[1])
+                    instruction_operand = int(instruction_elements[1])
 
                 instructions.append(Instruction(opcode, instruction_operand, optype))
 

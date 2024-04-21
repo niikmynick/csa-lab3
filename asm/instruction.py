@@ -25,6 +25,8 @@ class OpCode(int, Enum):
 
     HALT = 0x40
 
+    NOPE = 0x00
+
     def __str__(self):
         return self.name.lower()
 
@@ -69,6 +71,7 @@ def get_opcode_by_name(name: str) -> OpCode:
     for op in OpCode:
         if op.name.lower() == name.lower():
             return op
+    return OpCode.NOPE
 
 
 if __name__ == "__main__":
