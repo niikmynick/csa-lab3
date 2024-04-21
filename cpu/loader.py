@@ -3,11 +3,17 @@ from asm.instruction import Instruction, OpCode, OpType, DataType
 
 
 class Loader:
-    def __init__(self, instruction_memory: Memory, data_memory: Memory):
-        self.instructions_memory = instruction_memory
-        self.data_memory = data_memory
+    def __init__(self):
+        self.instructions_memory = None
+        self.data_memory = None
         self.DATA_SECTION_MARKER = 0xFF
         self.CODE_SECTION_MARKER = 0xFE
+
+    def connect_instructions_memory(self, instruction_memory: Memory):
+        self.instructions_memory = instruction_memory
+
+    def connect_data_memory(self, data_memory: Memory):
+        self.data_memory = data_memory
 
     def load(self, filename: str):
         data_flag = False

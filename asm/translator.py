@@ -6,7 +6,8 @@ class Translator:
         self.DATA_SECTION_MARKER = 0xFF
         self.CODE_SECTION_MARKER = 0xFE
 
-    def asm_to_variables(self, variables: dict) -> bytes:
+    @staticmethod
+    def asm_to_variables(variables: dict) -> bytes:
         binary_code = b""
 
         for variable in variables.values():
@@ -27,7 +28,8 @@ class Translator:
 
         return binary_code
 
-    def asm_to_instructions(self, instructions: list[Instruction]) -> bytes:
+    @staticmethod
+    def asm_to_instructions(instructions: list[Instruction]) -> bytes:
         binary_code = b""
 
         for instruction in instructions:
@@ -61,7 +63,8 @@ class Translator:
 
         return binary_code
 
-    def binary_to_variables(self, binary: bytes) -> dict:
+    @staticmethod
+    def binary_to_variables(binary: bytes) -> dict:
         variables = {}
         i = 0
 
@@ -77,7 +80,8 @@ class Translator:
 
         return variables
 
-    def binary_to_instructions(self, binary: bytes) -> dict[int, Instruction]:
+    @staticmethod
+    def binary_to_instructions(binary: bytes) -> dict[int, Instruction]:
         instructions = {}
         i = 0
 
