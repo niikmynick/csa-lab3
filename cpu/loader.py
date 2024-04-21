@@ -41,19 +41,11 @@ class Loader:
                     allocated_address = self.data_memory.allocate(size)
 
                     if data_type == DataType.STRING.value:
-                        # for j in range(size):
-                        #     self.data_memory.write(allocated_address + j, binary_code[i + 3 + j])
-                        # self.data_memory.write(allocated_address + size, 0)
-
-                        init_value = binary_code[i + 3:i + 3 + size].decode('utf-8')
+                        str_value = binary_code[i + 3:i + 3 + size].decode('utf-8')
+                        self.data_memory.write(allocated_address, str_value)
                     else:
-                        # for j in range(size):
-                        #     self.data_memory.write(allocated_address + j, binary_code[i + 3 + j])
-                        # self.data_memory.write(allocated_address + size, 0)
-
-                        init_value = int.from_bytes(binary_code[i + 3:i + 3 + size], byteorder='big')
-
-                    self.data_memory.write(allocated_address, init_value)
+                        int_value = int.from_bytes(binary_code[i + 3:i + 3 + size], byteorder='big')
+                        self.data_memory.write(allocated_address, int_value)
 
                     i += 3 + size + 1
 
@@ -64,9 +56,11 @@ class Loader:
 
                     allocated_address = self.instructions_memory.allocate(1)
                     if operand_type == OpType.NOPE.value:
-                        self.instructions_memory.write(allocated_address, Instruction(OpCode(opcode), None, OpType(operand_type)))
+                        self.instructions_memory.write(allocated_address,
+                                                       Instruction(OpCode(opcode), None, OpType(operand_type)))
 
                     else:
-                        self.instructions_memory.write(allocated_address, Instruction(OpCode(opcode), operand, OpType(operand_type)))
+                        self.instructions_memory.write(allocated_address,
+                                                       Instruction(OpCode(opcode), operand, OpType(operand_type)))
 
                     i += 8 + 1

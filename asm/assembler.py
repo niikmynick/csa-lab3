@@ -6,7 +6,8 @@ class Assembler:
     def __init__(self):
         self.translator = Translator()
 
-        self.all_instructions = ["push", "pop", "read", "write", "compare", "jump", "jla", "jle", "jeq", "jne", "add", "sub", "mul", "div", "inc", "dec", "save", "halt"]
+        self.all_instructions = ["push", "pop", "read", "write", "compare", "jump", "jla", "jle", "jeq", "jne", "add",
+                                 "sub", "mul", "div", "inc", "dec", "save", "halt"]
         self.no_op_instructions = ["pop", "read", "write", "compare", "add", "sub", "mul", "div", "inc", "dec", "halt"]
         self.one_op_instructions = ["push", "jump", "jne", "jeq", "jla", "jle", "save"]
         self.jump_instructions = ["jump", "jne", "jeq", "jla", "jle"]
@@ -46,17 +47,21 @@ class Assembler:
 
                 assert len(elements) == 2, f"No value provided for var {elements[0]}"
 
-                assert elements[0] not in self.all_instructions, f"Var {elements[0]} has the same name as an instruction"
+                assert elements[0] not in self.all_instructions, \
+                    f"Var {elements[0]} has the same name as an instruction"
                 assert not elements[0].isnumeric(), f"Variable name {elements[0]} is a number"
                 assert not elements[0][0].isdigit(), f"Variable name {elements[0]} starts with a digit"
 
-                assert elements[1].isnumeric() or elements[1].startswith('"') or elements[1].startswith("'"), f"Value for var {elements[0]} is not a number or a string"
+                assert elements[1].isnumeric() or elements[1].startswith('"') or elements[1].startswith("'"), \
+                    f"Value for var {elements[0]} is not a number or a string"
 
                 if "'" in elements[1]:
-                    assert elements[1].startswith("'") and elements[1].endswith("'"), f"Value for var {elements[0]} is not enclosed in single quotes"
+                    assert elements[1].startswith("'") and elements[1].endswith("'"), \
+                        f"Value for var {elements[0]} is not enclosed in single quotes"
 
                 elif '"' in elements[1]:
-                    assert elements[1].startswith('"') and elements[1].endswith('"'), f"Value for var {elements[0]} is not enclosed in double quotes"
+                    assert elements[1].startswith('"') and elements[1].endswith('"'), \
+                        f"Value for var {elements[0]} is not enclosed in double quotes"
 
             elif line.endswith(":"):
                 label = line[:-1]
@@ -79,13 +84,16 @@ class Assembler:
 
                     operand = elements[1]
 
-                    assert operand.isnumeric() or operand.startswith('"') or operand.startswith("'") or elements, f"Operand {operand} for instruction {elements[0]} is not a number or a string"
+                    assert operand.isnumeric() or operand.startswith('"') or operand.startswith("'") or elements, \
+                        f"Operand {operand} for instruction {elements[0]} is not a number or a string"
 
                     if "'" in operand:
-                        assert operand.startswith("'") and operand.endswith("'"), f"Operand {operand} for instruction {elements[0]} is not enclosed in single quotes"
+                        assert operand.startswith("'") and operand.endswith("'"), \
+                            f"Operand {operand} for instruction {elements[0]} is not enclosed in single quotes"
 
                     elif '"' in operand:
-                        assert operand.startswith('"') and operand.endswith('"'), f"Operand {operand} for instruction {elements[0]} is not enclosed in double quotes"
+                        assert operand.startswith('"') and operand.endswith('"'), \
+                            f"Operand {operand} for instruction {elements[0]} is not enclosed in double quotes"
 
         # parse variables and labels
         for line in lines:
@@ -102,19 +110,21 @@ class Assembler:
                 name, arg = elements
 
                 if arg.isnumeric():
-                    init_value = int(arg)
-                    size = len(hex(init_value)) - 2
+                    int_value = int(arg)
+                    size = len(hex(int_value)) - 2
                     arg_type = "int"
+                    value = {"init_value": int_value, "type": arg_type, "address": memory_counter, "size": size}
 
                 else:
-                    init_value = arg[1:-1]
-                    if "\\n" in init_value:
-                        size = len(init_value) - 1
-                        init_value = init_value.replace("\\n", "\n")
-                    size = len(init_value)
+                    str_value = arg[1:-1]
+                    if "\\n" in str_value:
+                        size = len(str_value) - 1
+                        str_value = str_value.replace("\\n", "\n")
+                    else:
+                        size = len(str_value)
                     arg_type = "string"
+                    value = {"init_value": str_value, "type": arg_type, "address": memory_counter, "size": size}
 
-                value = {"init_value": init_value, "type": arg_type, "address": memory_counter, "size": size}
                 variables[name] = value
 
                 memory_counter += size
@@ -158,7 +168,8 @@ class Assembler:
                     optype = OpType.ADDRESS
 
                 elif elements[1] in labels:
-                    assert elements[0] in self.jump_instructions, f"Label {elements[1]} is not allowed in instruction {elements[0]}"
+                    assert elements[0] in self.jump_instructions, \
+                        f"Label {elements[1]} is not allowed in instruction {elements[0]}"
                     operand = labels[elements[1]]
                     optype = OpType.ADDRESS
 
