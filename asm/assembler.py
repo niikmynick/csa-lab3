@@ -113,7 +113,7 @@ class Assembler:
                     int_value = int(arg)
                     size = len(hex(int_value)) - 2
                     arg_type = "int"
-                    value = {"init_value": int_value, "type": arg_type, "address": memory_counter, "size": size}
+                    value: dict[str, int | str] = {"init_value": int_value, "type": arg_type, "address": memory_counter, "size": size}
 
                 else:
                     str_value = arg[1:-1]
@@ -123,7 +123,7 @@ class Assembler:
                     else:
                         size = len(str_value)
                     arg_type = "string"
-                    value = {"init_value": str_value, "type": arg_type, "address": memory_counter, "size": size}
+                    value: dict[str, int | str] = {"init_value": str_value, "type": arg_type, "address": memory_counter, "size": size}
 
                 variables[name] = value
 
@@ -160,29 +160,32 @@ class Assembler:
                 optype = OpType.VALUE
 
                 if len(elements) == 1:
-                    operand = None
-                    optype = OpType.NOPE
+                    instructions.append(Instruction(opcode))
 
                 elif elements[1] in variables:
-                    operand = variables[elements[1]]["address"]
+                    int_operand: int = variables[elements[1]]["address"]
                     optype = OpType.ADDRESS
+                    instructions.append(Instruction(opcode, int_operand, optype))
 
                 elif elements[1] in labels:
                     assert elements[0] in self.jump_instructions, \
                         f"Label {elements[1]} is not allowed in instruction {elements[0]}"
-                    operand = labels[elements[1]]
+                    int_operand: int = labels[elements[1]]
                     optype = OpType.ADDRESS
 
+                    instructions.append(Instruction(opcode, int_operand, optype))
+
                 elif elements[1].isnumeric():
-                    operand = int(elements[1])
+                    int_operand: int = int(elements[1])
+                    instructions.append(Instruction(opcode, int_operand, optype))
 
                 elif "'" in elements[1] or '"' in elements[1]:
-                    operand = elements[1][1:-1]
+                    str_operand: str = elements[1][1:-1]
+                    instructions.append(Instruction(opcode, str_operand, optype))
 
                 else:
-                    operand = elements[1]
-
-                instructions.append(Instruction(opcode, operand, optype))
+                    str_operand = elements[1]
+                    instructions.append(Instruction(opcode, str_operand, optype))
 
                 instructions_counter += 1
 

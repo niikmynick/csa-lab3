@@ -46,7 +46,7 @@ class DataType(int, Enum):
 
 
 class Instruction:
-    def __init__(self, opcode: OpCode, operand: int | None = None, operand_type: OpType = OpType.NOPE, data_type: DataType = DataType.NOPE):
+    def __init__(self, opcode: OpCode, operand: int | str | None = None, operand_type: OpType = OpType.NOPE, data_type: DataType = DataType.NOPE):
         self.opcode = opcode
         self.operand = operand
         self.operand_type = operand_type
