@@ -82,7 +82,7 @@ class Translator:
 
     @staticmethod
     def binary_to_instructions(binary: bytes) -> dict[int, Instruction]:
-        instructions = {}
+        instructions: dict[int, Instruction] = {}
         i = 0
 
         while i < len(binary):
@@ -91,7 +91,7 @@ class Translator:
             operand = int.from_bytes(binary[i + 2:i + 8], "big")
 
             if operand_type == OpType.NOPE:
-                instructions[len(instructions)] = Instruction(opcode, None, operand_type)
+                instructions[len(instructions)] = Instruction(opcode)
 
             else:
                 instructions[len(instructions)] = Instruction(opcode, operand, operand_type)

@@ -23,7 +23,8 @@ class Assembler:
         assert ".code" in lines, "No code section found"
 
         labels = {}
-        variables = {}  # { "name": { "init_value": 0, "type": "int", "address": 0, "size": 0 }, }
+        # variables = { "name": { "init_value": 0, "type": "int", "address": 0, "size": 0 }, }
+        variables: dict[str, dict[str, int | str]] = {}
         instructions = []
 
         data_flag = False
@@ -101,19 +102,19 @@ class Assembler:
                 name, arg = elements
 
                 if arg.isnumeric():
-                    arg = int(arg)
-                    size = len(hex(arg)) - 2
+                    init_value = int(arg)
+                    size = len(hex(init_value)) - 2
                     arg_type = "int"
 
                 else:
-                    arg = arg[1:-1]
-                    if "\\n" in arg:
-                        size = len(arg) - 1
-                        arg = arg.replace("\\n", "\n")
-                    size = len(arg)
+                    init_value = arg[1:-1]
+                    if "\\n" in init_value:
+                        size = len(init_value) - 1
+                        init_value = init_value.replace("\\n", "\n")
+                    size = len(init_value)
                     arg_type = "string"
 
-                value = {"init_value": arg, "type": arg_type, "address": memory_counter, "size": size}
+                value = {"init_value": init_value, "type": arg_type, "address": memory_counter, "size": size}
                 variables[name] = value
 
                 memory_counter += size

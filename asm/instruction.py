@@ -42,10 +42,11 @@ class DataType(int, Enum):
     INT = 0x01
     CHAR = 0x02
     STRING = 0x03
+    NOPE = 0x04
 
 
 class Instruction:
-    def __init__(self, opcode: OpCode, operand: int = None, operand_type: OpType = None, data_type: DataType = None):
+    def __init__(self, opcode: OpCode, operand: int | None = None, operand_type: OpType = OpType.NOPE, data_type: DataType = DataType.NOPE):
         self.opcode = opcode
         self.operand = operand
         self.operand_type = operand_type

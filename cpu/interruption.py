@@ -9,12 +9,12 @@ class InterruptionType(Enum):
 
 
 class Interruption:
-    def __init__(self, interruption_type: InterruptionType, message: str = None):
+    def __init__(self, interruption_type: InterruptionType, message: str = ''):
         self.interruption_type = interruption_type
         self.message = message
 
     def __str__(self):
-        return f"Interruption: {self.interruption_type.name} {self.message if self.message is not None else ''}"
+        return f"Interruption: {self.interruption_type.name} {self.message}"
 
     def __repr__(self):
         return str(self)
