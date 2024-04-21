@@ -1,4 +1,3 @@
-from io_managers.output_manager import OutputManager
 from enum import Enum
 
 
@@ -14,11 +13,22 @@ class Place(Enum):
     INSTR = 1
     ALU = 2
     SYSTEM = 3
+    INPUT = 4
+    OUTPUT = 5
 
 
 class Logger:
-    def __init__(self, output_manager: OutputManager):
-        self.output_manager = output_manager
+    def __init__(self):
+        self.log_device = None
+
+    def set_log_filepath(self, log_filepath: str):
+        self.log_device = open(log_filepath, 'a')
 
     def log(self, level: LogLevel, place: Place, message: str):
-        self.output_manager.log(f"{level.name:<10}{'::':<7}{place.name:<12}{message}\n")
+        assert self.log_device is not None, "Log device is not set"
+
+        self.log_device.write(f"{level.name:<10}{'::':<7}{place.name:<12}{message}\n")
+        self.log_device.flush()
+
+    def turn_off(self):
+        self.log_device.close()
