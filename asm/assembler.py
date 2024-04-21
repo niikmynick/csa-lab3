@@ -1,5 +1,5 @@
 from asm.translator import Translator
-from asm.instruction import Instruction, OpType, get_opcode_by_name
+from asm.instruction import Instruction, OpCode, OpType, get_opcode_by_name
 
 
 class Assembler:
@@ -23,7 +23,7 @@ class Assembler:
 
         assert ".code" in lines, "No code section found"
 
-        labels = {}
+        labels: dict[str, int] = {}
         # variables = { "name": { "init_value": 0, "type": "int", "address": 0, "size": 0 }, }
         variables: dict[str, dict[str, int | str]] = {}
         instructions = []
@@ -82,18 +82,11 @@ class Assembler:
                 elif elements[0] in self.one_op_instructions:
                     assert len(elements) == 2, f"Instruction {elements[0]} takes exactly one operand"
 
-                    operand = elements[1]
+                    operand: str = elements[1]
 
-                    assert operand.isnumeric() or operand.startswith('"') or operand.startswith("'") or elements, \
-                        f"Operand {operand} for instruction {elements[0]} is not a number or a string"
-
-                    if "'" in operand:
-                        assert operand.startswith("'") and operand.endswith("'"), \
-                            f"Operand {operand} for instruction {elements[0]} is not enclosed in single quotes"
-
-                    elif '"' in operand:
-                        assert operand.startswith('"') and operand.endswith('"'), \
-                            f"Operand {operand} for instruction {elements[0]} is not enclosed in double quotes"
+                    assert ' ' not in operand, f"Operand {operand} contains spaces"
+                    assert '"' not in operand, f"Operand {operand} contains double quotes"
+                    assert "'" not in operand, f"Operand {operand} contains single quotes"
 
         # parse variables and labels
         for line in lines:
@@ -113,7 +106,8 @@ class Assembler:
                     int_value = int(arg)
                     size = len(hex(int_value)) - 2
                     arg_type = "int"
-                    value: dict[str, int | str] = {"init_value": int_value, "type": arg_type, "address": memory_counter, "size": size}
+                    value: dict[str, int | str] = \
+                        {"init_value": int_value, "type": arg_type, "address": memory_counter, "size": size}
 
                 else:
                     str_value = arg[1:-1]
@@ -123,7 +117,8 @@ class Assembler:
                     else:
                         size = len(str_value)
                     arg_type = "string"
-                    value: dict[str, int | str] = {"init_value": str_value, "type": arg_type, "address": memory_counter, "size": size}
+                    value: dict[str, int | str] = \
+                        {"init_value": str_value, "type": arg_type, "address": memory_counter, "size": size}
 
                 variables[name] = value
 
@@ -131,7 +126,7 @@ class Assembler:
 
                 continue
 
-            if line.endswith(":"):
+            elif line.endswith(":"):
                 label = line[:-1]
                 labels[label] = instructions_counter
                 continue
@@ -155,37 +150,29 @@ class Assembler:
                 continue
 
             else:
-                elements = line.split(" ", 1)
-                opcode = get_opcode_by_name(elements[0])
-                optype = OpType.VALUE
+                elements: list[str] = line.split(" ", 1)
+                opcode: OpCode = get_opcode_by_name(elements[0])
+                optype: OpType = OpType.VALUE
 
                 if len(elements) == 1:
                     instructions.append(Instruction(opcode))
+                    instructions_counter += 1
+                    continue
 
                 elif elements[1] in variables:
-                    int_operand: int = variables[elements[1]]["address"]
+                    instruction_operand: int = int(variables[elements[1]]["address"])
                     optype = OpType.ADDRESS
-                    instructions.append(Instruction(opcode, int_operand, optype))
 
                 elif elements[1] in labels:
                     assert elements[0] in self.jump_instructions, \
                         f"Label {elements[1]} is not allowed in instruction {elements[0]}"
-                    int_operand: int = labels[elements[1]]
+                    instruction_operand: int = labels[elements[1]]
                     optype = OpType.ADDRESS
 
-                    instructions.append(Instruction(opcode, int_operand, optype))
-
-                elif elements[1].isnumeric():
-                    int_operand: int = int(elements[1])
-                    instructions.append(Instruction(opcode, int_operand, optype))
-
-                elif "'" in elements[1] or '"' in elements[1]:
-                    str_operand: str = elements[1][1:-1]
-                    instructions.append(Instruction(opcode, str_operand, optype))
-
                 else:
-                    str_operand = elements[1]
-                    instructions.append(Instruction(opcode, str_operand, optype))
+                    instruction_operand: int = int(elements[1])
+
+                instructions.append(Instruction(opcode, instruction_operand, optype))
 
                 instructions_counter += 1
 
