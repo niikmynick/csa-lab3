@@ -1,0 +1,26 @@
+INFO      ::     INPUT       Using stdin as input device.
+INFO      ::     OUTPUT      Using stdout as terminal.
+INFO      ::     SYSTEM      Starting execution
+DEBUG     ::     SYSTEM      Initial state: ControlUnit: time=0, instructions executed=0
+DEBUG     ::     SYSTEM      Instructions memory: {0: READ - 203, 1: WRITE - 213, 2: HALT - 403}
+DEBUG     ::     SYSTEM      Data memory: {0: <io_managers.input_manager.InputManager object at 0x104a1c6d0>, 1: <io_managers.output_manager.OutputManager object at 0x104a1cfd0>}
+DEBUG     ::     INTER       Have 0 interruptions
+DEBUG     ::     SYSTEM      ControlUnit: time=3, instructions executed=0
+INFO      ::     INSTR       Processing READ  
+DEBUG     ::     INTER       Have 1 interruptions
+DEBUG     ::     INTER       Processing Interruption: INPUT 
+INFO      ::     INPUT       Reading input
+INFO      ::     INPUT       Read value: Hello, world!
+DEBUG     ::     INTER       Finished processing Interruption: INPUT 
+DEBUG     ::     SYSTEM      ControlUnit: time=11, instructions executed=1
+INFO      ::     INSTR       Processing WRITE  
+DEBUG     ::     INTER       Have 1 interruptions
+DEBUG     ::     INTER       Processing Interruption: OUTPUT 
+INFO      ::     OUTPUT      Writing output
+DEBUG     ::     INTER       Finished processing Interruption: OUTPUT 
+DEBUG     ::     SYSTEM      ControlUnit: time=18, instructions executed=2
+INFO      ::     INSTR       Processing HALT  
+DEBUG     ::     INTER       Have 1 interruptions
+DEBUG     ::     INTER       Processing Interruption: HALT 
+INFO      ::     SYSTEM      Halting
+INFO      ::     SYSTEM      Execution finished, state: ControlUnit: time=21, instructions executed=3

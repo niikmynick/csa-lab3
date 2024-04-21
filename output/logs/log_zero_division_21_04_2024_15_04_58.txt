@@ -1,0 +1,23 @@
+INFO      ::     INPUT       Using stdin as input device.
+INFO      ::     OUTPUT      Using stdout as terminal.
+INFO      ::     SYSTEM      Starting execution
+DEBUG     ::     SYSTEM      Initial state: ControlUnit: time=0, instructions executed=0
+DEBUG     ::     SYSTEM      Instructions memory: {0: PUSH 1 - 121, 1: PUSH 0 - 120, 2: DIV - 343, 3: WRITE - 213, 4: HALT - 403}
+DEBUG     ::     SYSTEM      Data memory: {0: <io_managers.input_manager.InputManager object at 0x100bc86d0>, 1: <io_managers.output_manager.OutputManager object at 0x100bc8fd0>}
+DEBUG     ::     INTER       Have 0 interruptions
+DEBUG     ::     SYSTEM      ControlUnit: time=3, instructions executed=0
+INFO      ::     INSTR       Processing PUSH VALUE 1
+DEBUG     ::     INTER       Have 0 interruptions
+DEBUG     ::     SYSTEM      ControlUnit: time=7, instructions executed=1
+INFO      ::     INSTR       Processing PUSH VALUE 0
+DEBUG     ::     INTER       Have 0 interruptions
+DEBUG     ::     SYSTEM      ControlUnit: time=11, instructions executed=2
+INFO      ::     INSTR       Processing DIV  
+DEBUG     ::     INTER       Have 1 interruptions
+DEBUG     ::     INTER       Processing Interruption: ERROR Division by zero
+ERROR     ::     SYSTEM      Error: Division by zero
+DEBUG     ::     INTER       Finished processing Interruption: ERROR Division by zero
+DEBUG     ::     INTER       Processing Interruption: OUTPUT An error occurred: Division by zero
+DEBUG     ::     INTER       Processing Interruption: HALT 
+INFO      ::     SYSTEM      Halting
+INFO      ::     SYSTEM      Execution finished, state: ControlUnit: time=22, instructions executed=3
