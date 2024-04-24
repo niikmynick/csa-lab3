@@ -15,59 +15,58 @@ in_source: |-
         halt
 in_stdin: |-
     2:U
-    3:s
-    5:e
-    10:r
+    10:s
+    18:e
+    23:r
 out_bin: |-
     111111110000000000010011000000110101011101101000011000010111010000100000011010010111001100100000011110010110111101110101011100100010000001101110011000010110110101100101001111110000101000000000000100110000011100000011010010000110010101101100011011000110111100101100001000000000000000011010000000100000001100100001000010100000000011111110000000010000000100000000000000000000000000000000000000000000000000000000001000010000001100000000000000000000000000000000000000000000000000000000001000000000001100000000000000000000000000000000000000000000000000000000000000010000000100000000000000000000000000000000000000000001001100000000001000010000001100000000000000000000000000000000000000000000000000000000001000010000001100000000000000000000000000000000000000000000000000000000000000010000000100000000000000000000000000000000000000000001101000000000001000010000001100000000000000000000000000000000000000000000000000000000010000000000001100000000000000000000000000000000000000000000000000000000
 out_stdout: |-
     What is your name?
     Hello, User!
 out_log: |-
+    INFO      ::     INPUT       Input schedule: [(2, 'U'), (10, 's'), (18, 'e'), (23, 'r')]
     INFO      ::     SYSTEM      Starting execution
     DEBUG     ::     SYSTEM      Initial state: ControlUnit: time=0, instructions executed=0
     DEBUG     ::     SYSTEM      Instructions memory: {0: PUSH $0 - 110, 1: WRITE - 213, 2: READ - 203, 3: PUSH $19 - 1113, 4: WRITE - 213, 5: WRITE - 213, 6: PUSH $26 - 111a, 7: WRITE - 213, 8: HALT - 403}
     DEBUG     ::     SYSTEM      Data memory: {0: InputManager, 1: OutputManager, 2: 'What is your name?\n', 3: None, 4: None, 5: None, 6: None, 7: None, 8: None, 9: None, 10: None, 11: None, 12: None, 13: None, 14: None, 15: None, 16: None, 17: None, 18: None, 19: None, 20: None, 21: 'Hello, ', 22: None, 23: None, 24: None, 25: None, 26: None, 27: None, 28: '!\n', 29: None}
     DEBUG     ::     INTER       Have 0 interruptions
-    DEBUG     ::     SYSTEM      ControlUnit: time=3, instructions executed=0
+    DEBUG     ::     SYSTEM      ControlUnit: time=5, instructions executed=0
     INFO      ::     INSTR       Processing PUSH ADDRESS 0
     DEBUG     ::     INTER       Have 0 interruptions
-    DEBUG     ::     SYSTEM      ControlUnit: time=8, instructions executed=1
-    INFO      ::     INSTR       Processing WRITE  
+    DEBUG     ::     SYSTEM      ControlUnit: time=15, instructions executed=1
+    INFO      ::     INSTR       Processing WRITE
     DEBUG     ::     INTER       Have 1 interruptions
-    DEBUG     ::     INTER       Processing Interruption: OUTPUT What is your name?
-
-    DEBUG     ::     SYSTEM      ControlUnit: time=14, instructions executed=2
-    INFO      ::     INSTR       Processing READ  
+    DEBUG     ::     INTER       Processing Interruption: OUTPUT 
+    DEBUG     ::     SYSTEM      ControlUnit: time=27, instructions executed=2
+    INFO      ::     INSTR       Processing READ
     DEBUG     ::     INTER       Have 1 interruptions
-    DEBUG     ::     INTER       Processing Interruption: INPUT 
+    DEBUG     ::     INTER       Processing Interruption: INPUT
     INFO      ::     INPUT       Reading input
     INFO      ::     INPUT       Read value: User
-    DEBUG     ::     INTER       Finished processing Interruption: INPUT 
-    DEBUG     ::     SYSTEM      ControlUnit: time=23, instructions executed=3
+    DEBUG     ::     INTER       Finished processing Interruption: INPUT
+    DEBUG     ::     SYSTEM      ControlUnit: time=43, instructions executed=3
     INFO      ::     INSTR       Processing PUSH ADDRESS 19
     DEBUG     ::     INTER       Have 0 interruptions
-    DEBUG     ::     SYSTEM      ControlUnit: time=28, instructions executed=4
-    INFO      ::     INSTR       Processing WRITE  
+    DEBUG     ::     SYSTEM      ControlUnit: time=53, instructions executed=4
+    INFO      ::     INSTR       Processing WRITE
     DEBUG     ::     INTER       Have 1 interruptions
-    DEBUG     ::     INTER       Processing Interruption: OUTPUT Hello, 
-    DEBUG     ::     SYSTEM      ControlUnit: time=34, instructions executed=5
-    INFO      ::     INSTR       Processing WRITE  
+    DEBUG     ::     INTER       Processing Interruption: OUTPUT 
+    DEBUG     ::     SYSTEM      ControlUnit: time=65, instructions executed=5
+    INFO      ::     INSTR       Processing WRITE
     DEBUG     ::     INTER       Have 1 interruptions
-    DEBUG     ::     INTER       Processing Interruption: OUTPUT User
-    DEBUG     ::     SYSTEM      ControlUnit: time=40, instructions executed=6
+    DEBUG     ::     INTER       Processing Interruption: OUTPUT 
+    DEBUG     ::     SYSTEM      ControlUnit: time=77, instructions executed=6
     INFO      ::     INSTR       Processing PUSH ADDRESS 26
     DEBUG     ::     INTER       Have 0 interruptions
-    DEBUG     ::     SYSTEM      ControlUnit: time=45, instructions executed=7
-    INFO      ::     INSTR       Processing WRITE  
+    DEBUG     ::     SYSTEM      ControlUnit: time=87, instructions executed=7
+    INFO      ::     INSTR       Processing WRITE
     DEBUG     ::     INTER       Have 1 interruptions
-    DEBUG     ::     INTER       Processing Interruption: OUTPUT !
-
-    DEBUG     ::     SYSTEM      ControlUnit: time=51, instructions executed=8
-    INFO      ::     INSTR       Processing HALT  
+    DEBUG     ::     INTER       Processing Interruption: OUTPUT 
+    DEBUG     ::     SYSTEM      ControlUnit: time=99, instructions executed=8
+    INFO      ::     INSTR       Processing HALT
     DEBUG     ::     INTER       Have 1 interruptions
-    DEBUG     ::     INTER       Processing Interruption: HALT 
+    DEBUG     ::     INTER       Processing Interruption: HALT
     INFO      ::     SYSTEM      Halting
-    INFO      ::     SYSTEM      Execution finished, state: ControlUnit: time=54, instructions executed=9
+    INFO      ::     SYSTEM      Execution finished, state: ControlUnit: time=106, instructions executed=9
     INFO      ::     INPUT       Turning off input device.
     INFO      ::     OUTPUT      Turning off output device.

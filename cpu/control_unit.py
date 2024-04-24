@@ -64,6 +64,7 @@ class ControlUnit:
 
     def increment_instruction_counter(self):
         self._instruction_counter += 1
+        self.tick()
 
     def get_instruction_counter(self) -> int:
         return self._instruction_counter
@@ -73,8 +74,9 @@ class ControlUnit:
 
         while not self._interruptions_stack.is_empty():
             interruption: Interruption = self._interruptions_stack.pop()
-            self._interruption_flag = True
+            self.tick()
 
+            self._interruption_flag = True
             self.tick()
 
             self.logger.log(LogLevel.DEBUG, Place.INTER, f"Processing {interruption}")
@@ -87,7 +89,7 @@ class ControlUnit:
 
                     self.logger.log(LogLevel.INFO, Place.INPUT, "Reading input")
                     data: list = self.data_memory.read(self.input_address)
-                    # self.tick()
+                    self.tick()
 
                     if data is None or len(data) == 0:
                         interruption = Interruption(InterruptionType.ERROR, "No data available for input")
@@ -96,8 +98,9 @@ class ControlUnit:
                         continue
 
                     data = list(filter(lambda mark: self.read_time < mark[0] <= self._time, data))
-                    self.read_time = self._time
+                    self.tick()
 
+                    self.read_time = self._time
                     self.tick()
 
                     value = ''.join([mark[1] for mark in data])
@@ -120,17 +123,21 @@ class ControlUnit:
                         self.data_memory.write(self.output_address, interruption.message)
                         self.tick()
                         continue
+
                     self.tick()
 
                     self.logger.log(LogLevel.INFO, Place.OUTPUT, "Writing output")
 
                     value = self._data_stack.pop()
+                    self.tick()
+
                     self.data_memory.write(self.output_address, value)
                     self.tick()
 
                 case InterruptionType.HALT:
                     self._exit_flag = True
                     self.tick()
+
                     self.logger.log(LogLevel.INFO, Place.SYSTEM, "Halting")
                     break
 
@@ -149,17 +156,19 @@ class ControlUnit:
             self.logger.log(LogLevel.DEBUG, Place.INTER, f"Finished processing {interruption}")
 
         self._interruption_flag = False
+        self.tick()
 
     def handle_command(self):
         instruction = self._instructions_stack.pop()
+
+        self.tick()
 
         opcode = instruction.opcode
         operand = instruction.operand
         optype = instruction.operand_type
 
-        self.logger.log(LogLevel.INFO, Place.INSTR, f"Processing {opcode.name} "
-                                                    f"{optype.name if optype != OpType.NOPE else ''} "
-                                                    f"{operand if operand is not None else ''}")
+        self.logger.log(LogLevel.INFO, Place.INSTR, f"Processing {opcode.name}" +
+                        (f" {optype.name} {operand}" if optype != OpType.NOPE else ""))
 
         match opcode:
             case OpCode.PUSH:
@@ -175,16 +184,18 @@ class ControlUnit:
                         interruption = Interruption(InterruptionType.ERROR, "No value at address")
                         self._interruptions_stack.push(interruption)
                         self.tick()
-                        return
+                    else:
+                        self._data_stack.push(value)
+                        self.tick()
 
-                    self._data_stack.push(value)
-                    self.tick()
+                self.tick()
 
             case OpCode.POP:
                 if self._data_stack.is_empty():
                     interruption = Interruption(InterruptionType.ERROR, "Stack is empty")
                     self._interruptions_stack.push(interruption)
                     self.tick()
+
                 else:
                     self._data_stack.pop()
                     self.tick()
@@ -198,6 +209,8 @@ class ControlUnit:
 
             case OpCode.WRITE:
                 message = self._data_stack.pop()
+                self.tick()
+
                 interruption = Interruption(InterruptionType.OUTPUT, message)
                 self._interruptions_stack.push(interruption)
                 self.tick()
@@ -224,29 +237,34 @@ class ControlUnit:
                 self.tick()
 
                 self._command_pointer = operand + 1
+                self.tick()
 
             case OpCode.JLA:
                 if not self.alu.zero and not self.alu.negative:
                     self._instructions_stack.push(Instruction(OpCode.JUMP, operand, OpType.ADDRESS))
                     self.tick()
+
                 self.tick()
 
             case OpCode.JLE:
                 if self.alu.negative:
                     self._instructions_stack.push(Instruction(OpCode.JUMP, operand, OpType.ADDRESS))
                     self.tick()
+
                 self.tick()
 
             case OpCode.JEQ:
                 if self.alu.zero:
                     self._instructions_stack.push(Instruction(OpCode.JUMP, operand, OpType.ADDRESS))
                     self.tick()
+
                 self.tick()
 
             case OpCode.JNE:
                 if not self.alu.zero:
                     self._instructions_stack.push(Instruction(OpCode.JUMP, operand, OpType.ADDRESS))
                     self.tick()
+
                 self.tick()
 
             case OpCode.ADD:
@@ -305,6 +323,7 @@ class ControlUnit:
                     self.tick()
                     self._data_stack.push(self.alu.result)
                     self.tick()
+
                 self.tick()
 
             case OpCode.INC:
@@ -334,9 +353,16 @@ class ControlUnit:
                     interruption = Interruption(InterruptionType.ERROR, "Stack is empty")
                     self._interruptions_stack.push(interruption)
                     self.tick()
-                self.tick()
+                else:
+                    what = self._data_stack.peek()
+                    self.tick()
 
-                self.data_memory.write(self.base_pointer + operand, self._data_stack.peek())
+                    where = self.base_pointer + operand
+                    self.tick()
+
+                    self.data_memory.write(where, what)
+                    self.tick()
+
                 self.tick()
 
             case OpCode.HALT:
@@ -379,6 +405,7 @@ class ControlUnit:
                 self.tick()
 
                 self._command_pointer += 1
+                self.tick()
 
             self.tick()
 

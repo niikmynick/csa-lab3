@@ -21,6 +21,7 @@ class InputManager:
                     temp.append((int(time), value))
 
                 self.set_input(temp)
+                self.logger.log(LogLevel.INFO, Place.INPUT, f'Input schedule: {temp}')
 
                 # self.logger.log(LogLevel.INFO, Place.INPUT, 'Using ' + input_device + ' as input device.')
             except FileNotFoundError:

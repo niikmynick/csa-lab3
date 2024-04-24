@@ -19,7 +19,7 @@ def configure_io_managers(input_manager: InputManager, output_manager: OutputMan
     input_manager.set_logger(logger)
     output_manager.set_logger(logger)
 
-    input_manager.set_input_device("stdin")
+    input_manager.set_input_device("a.txt")
 
     output_manager.set_terminal('stdout')
     output_manager.set_result_filepath(result_filepath)
@@ -92,4 +92,4 @@ def main(test_name: str):
 
 
 if __name__ == '__main__':
-    main("cat")
+    main("hello_world")
