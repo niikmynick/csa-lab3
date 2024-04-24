@@ -1,5 +1,0 @@
-.code
-    read
-    write
-
-    halt

@@ -14,17 +14,22 @@ class OutputManager:
     def set_terminal(self, terminal: str):
         if terminal == 'stdout':
             self.terminal = stdout
-            self.logger.log(LogLevel.INFO, Place.OUTPUT, "Using stdout as terminal.")
+            # self.logger.log(LogLevel.INFO, Place.OUTPUT, "Using stdout as terminal.")
         else:
             try:
                 self.terminal = open(terminal, 'w')
-                self.logger.log(LogLevel.INFO, Place.OUTPUT, "Using " + terminal + " as terminal.")
+                # self.logger.log(LogLevel.INFO, Place.OUTPUT, "Using " + terminal + " as terminal.")
             except FileNotFoundError:
-                self.logger.log(LogLevel.ERROR, Place.OUTPUT, "File not found. Using stdout as terminal.")
+                # self.logger.log(LogLevel.ERROR, Place.OUTPUT, "File not found. Using stdout as terminal.")
                 self.terminal = stdout
 
     def set_result_filepath(self, result_filepath: str):
-        self.output_device = open(result_filepath, 'a')
+        try:
+            self.output_device = open(result_filepath, 'w')
+            # self.logger.log(LogLevel.INFO, Place.OUTPUT, "Using " + result_filepath + " as result file.")
+        except FileNotFoundError:
+            # self.logger.log(LogLevel.ERROR, Place.OUTPUT, "Result file not found")
+            exit(1)
 
     def write(self, data: str):
         self.write_terminal(data)
@@ -43,3 +48,9 @@ class OutputManager:
         if self.output_device is not None:
             self.logger.log(LogLevel.INFO, Place.OUTPUT, "Turning off output device.")
             self.output_device.close()
+
+    def __str__(self):
+        return "OutputManager"
+
+    def __repr__(self):
+        return str(self)

@@ -19,7 +19,7 @@ def configure_io_managers(input_manager: InputManager, output_manager: OutputMan
     input_manager.set_logger(logger)
     output_manager.set_logger(logger)
 
-    input_manager.set_input_device('stdin')
+    input_manager.set_input_device("stdin")
 
     output_manager.set_terminal('stdout')
     output_manager.set_result_filepath(result_filepath)
@@ -50,7 +50,7 @@ def configure_control_unit(processor: ControlUnit, base_pointer: int, input_addr
 
 
 def preprocess_code(assembler: Assembler, loader: Loader, test_name: str):
-    code_filepath = './golden/' + test_name + '.asm'
+    code_filepath = './golden/src/' + test_name + '.asm'
     binary_filepath = './output/binaries/' + test_name + '.bin'
 
     assembler.assemble(code_filepath, binary_filepath)
@@ -87,6 +87,8 @@ def main(test_name: str):
     preprocess_code(assembler, loader, test_name)
 
     processor.run()
+
+    turn_off_io_managers(input_manager, output_manager, logger)
 
 
 if __name__ == '__main__':

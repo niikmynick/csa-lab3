@@ -106,12 +106,6 @@ class ControlUnit:
                         self.data_memory.write(self.output_address, interruption.message)
                         self.tick()
                         continue
-
-                    if self._data_stack.is_empty():
-                        interruption_error = Interruption(InterruptionType.ERROR, "Stack is empty")
-                        self._interruptions_stack.push(interruption_error)
-                        self.tick()
-                        continue
                     self.tick()
 
                     self.logger.log(LogLevel.INFO, Place.OUTPUT, "Writing output")
@@ -189,7 +183,8 @@ class ControlUnit:
                 self.tick()
 
             case OpCode.WRITE:
-                interruption = Interruption(InterruptionType.OUTPUT)
+                message = self._data_stack.pop()
+                interruption = Interruption(InterruptionType.OUTPUT, message)
                 self._interruptions_stack.push(interruption)
                 self.tick()
 
