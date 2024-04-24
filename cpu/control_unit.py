@@ -27,6 +27,7 @@ class ControlUnit:
         self.input_address = None
         self.output_address = None
         self.base_pointer = None
+        self.read_time = 0
 
     def set_logger(self, logger: Logger):
         self.logger = logger
@@ -85,8 +86,21 @@ class ControlUnit:
                         self.tick()
 
                     self.logger.log(LogLevel.INFO, Place.INPUT, "Reading input")
-                    value = self.data_memory.read(self.input_address)
+                    data: list = self.data_memory.read(self.input_address)
+                    # self.tick()
+
+                    if data is None or len(data) == 0:
+                        interruption = Interruption(InterruptionType.ERROR, "No data available for input")
+                        self._interruptions_stack.push(interruption)
+                        self.tick()
+                        continue
+
+                    data = list(filter(lambda mark: self.read_time < mark[0] <= self._time, data))
+                    self.read_time = self._time
+
                     self.tick()
+
+                    value = ''.join([mark[1] for mark in data])
 
                     self.logger.log(LogLevel.INFO, Place.INPUT, f"Read value: {value}")
 

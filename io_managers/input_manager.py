@@ -15,6 +15,13 @@ class InputManager:
         else:
             try:
                 self.input_device = open(input_device, 'r')
+                temp = []
+                for line in self.input_device.readlines():
+                    time, value = line.strip().split(":")
+                    temp.append((int(time), value))
+
+                self.set_input(temp)
+
                 # self.logger.log(LogLevel.INFO, Place.INPUT, 'Using ' + input_device + ' as input device.')
             except FileNotFoundError:
                 # self.logger.log(LogLevel.ERROR, Place.INPUT, 'File not found. Using stdin as input device.')
@@ -26,13 +33,13 @@ class InputManager:
     def get_input(self):
         return self._input
 
-    def set_input(self, text):
-        self._input = text
+    def set_input(self, arg):
+        self._input = arg
 
     def read(self):
         if self.input_device == stdin:
             print("> ", end=" ")
-        self.set_input(self.input_device.readline().strip())
+            self.set_input((0, self.input_device.readline().strip()))
 
     def turn_off(self):
         if self.input_device is not None:
