@@ -92,4 +92,4 @@ def main(test_name: str):
 
 
 if __name__ == '__main__':
-    main("hello_world")
+    main("hello_user")

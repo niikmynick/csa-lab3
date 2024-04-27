@@ -14,7 +14,7 @@ class Interruption:
         self.message = message
 
     def __str__(self):
-        return f"Interruption: {self.interruption_type.name}" + (" " if self.message != "" else "" + f"{self.message}")
+        return f"Interruption: {self.interruption_type.name}" + (f" {self.message}" if self.message != "" else "")
 
     def __repr__(self):
         return str(self)

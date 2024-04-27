@@ -17,6 +17,7 @@ class Loader:
 
     def load(self, filename: str):
         data_flag = False
+        variables = {}
 
         with open(filename, 'rb') as file:
             binary_code = file.read()
@@ -38,14 +39,27 @@ class Loader:
                     size = binary_code[i + 1]
                     data_type = binary_code[i + 2]
 
-                    allocated_address = self.data_memory.allocate(size)
+                    # allocated_address = self.data_memory.allocate(size)
 
                     if data_type == DataType.STRING.value:
                         str_value = binary_code[i + 3:i + 3 + size].decode('utf-8')
-                        self.data_memory.write(allocated_address, str_value)
+                        allocated_address = self.data_memory.allocate(len(str_value) + 1)
+                        c = 0
+                        for j in str_value:
+                            self.data_memory.write(c + allocated_address, ord(j))
+                            c += 1
+
+                        self.data_memory.write(c + allocated_address, ord('\0'))
+
                     else:
+                        allocated_address = self.data_memory.allocate(1)
                         int_value = int.from_bytes(binary_code[i + 3:i + 3 + size], byteorder='big')
                         self.data_memory.write(allocated_address, int_value)
+
+                    variables[address] = {
+                        "actual_address": allocated_address,
+                        "data_type": data_type
+                    }
 
                     i += 3 + size + 1
 
@@ -55,12 +69,33 @@ class Loader:
                     operand = int.from_bytes(binary_code[i + 2:i + 8], "big")
 
                     allocated_address = self.instructions_memory.allocate(1)
-                    if operand_type == OpType.NOPE.value:
-                        self.instructions_memory.write(allocated_address,
-                                                       Instruction(OpCode(opcode), None, OpType(operand_type)))
-
-                    else:
-                        self.instructions_memory.write(allocated_address,
-                                                       Instruction(OpCode(opcode), operand, OpType(operand_type)))
+                    match operand_type:
+                        case OpType.NOPE.value:
+                            self.instructions_memory.write(
+                                allocated_address,
+                                Instruction(opcode=OpCode(opcode)))
+                        case OpType.VALUE.value:
+                            self.instructions_memory.write(
+                                allocated_address,
+                                Instruction(opcode=OpCode(opcode),
+                                            operand=operand,
+                                            operand_type=OpType(operand_type),
+                                            data_type=DataType.INT))
+                        case OpType.ADDRESS.value:
+                            if operand in variables and opcode not in [OpCode.JUMP.value, OpCode.JEQ.value, OpCode.JNE.value, OpCode.JLA.value, OpCode.JLE.value]:
+                                temp = variables[operand]
+                                self.instructions_memory.write(
+                                    allocated_address,
+                                    Instruction(opcode=OpCode(opcode),
+                                                operand=temp["actual_address"],
+                                                operand_type=OpType(operand_type),
+                                                data_type=DataType(temp["data_type"])))
+                            else:
+                                self.instructions_memory.write(
+                                    allocated_address,
+                                    Instruction(opcode=OpCode(opcode),
+                                                operand=operand,
+                                                operand_type=OpType(operand_type),
+                                                data_type=DataType.INT))
 
                     i += 8 + 1

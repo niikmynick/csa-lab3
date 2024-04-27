@@ -28,7 +28,7 @@ out_log: |-
   DEBUG     ::     SYSTEM      ControlUnit: time=21, instructions executed=1
   INFO      ::     INSTR       Processing WRITE
   DEBUG     ::     INTER       Have 1 interruptions
-  DEBUG     ::     INTER       Processing Interruption: OUTPUT 
+  DEBUG     ::     INTER       Processing Interruption: OUTPUT foo
   DEBUG     ::     SYSTEM      ControlUnit: time=33, instructions executed=2
   INFO      ::     INSTR       Processing HALT
   DEBUG     ::     INTER       Have 1 interruptions

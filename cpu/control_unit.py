@@ -2,7 +2,7 @@ from memory.stack import Stack
 from cpu.alu import ALU
 from cpu.interruption import Interruption, InterruptionType
 from memory.memory import Memory
-from asm.instruction import Instruction, OpCode, OpType
+from asm.instruction import Instruction, OpCode, OpType, DataType
 from io_managers.logger import Logger, LogLevel, Place
 
 
@@ -166,6 +166,7 @@ class ControlUnit:
         opcode = instruction.opcode
         operand = instruction.operand
         optype = instruction.operand_type
+        datatype = instruction.data_type
 
         self.logger.log(LogLevel.INFO, Place.INSTR, f"Processing {opcode.name}" +
                         (f" {optype.name} {operand}" if optype != OpType.NOPE else ""))
@@ -177,16 +178,40 @@ class ControlUnit:
                     self.tick()
 
                 elif optype == OpType.ADDRESS:
-                    value = self.data_memory.read(self.base_pointer + operand)
-                    self.tick()
+                    if datatype == DataType.INT:
+                        value = self.data_memory.read(operand)
+                        self.tick()
 
-                    if value is None:
-                        interruption = Interruption(InterruptionType.ERROR, "No value at address")
-                        self._interruptions_stack.push(interruption)
+                        if value is None:
+                            interruption = Interruption(InterruptionType.ERROR, "No value at address")
+                            self._interruptions_stack.push(interruption)
+                            self.tick()
+                        else:
+                            self._data_stack.push(value)
+                            self.tick()
+
+                    elif datatype == DataType.STRING:
+                        temp = 0
+                        temp += operand
+
+                        symbol = self.data_memory.read(temp)
                         self.tick()
-                    else:
+
+                        if symbol is None:
+                            interruption = Interruption(InterruptionType.ERROR, "No value at address")
+                            self._interruptions_stack.push(interruption)
+                            self.tick()
+                            return
+
+                        value = ""
+
+                        while symbol != ord('\0'):
+                            value += chr(symbol)
+                            temp += 1
+                            symbol = self.data_memory.read(temp)
+                            self.tick()
+
                         self._data_stack.push(value)
-                        self.tick()
 
                 self.tick()
 
@@ -357,7 +382,7 @@ class ControlUnit:
                     what = self._data_stack.peek()
                     self.tick()
 
-                    where = self.base_pointer + operand
+                    where = operand
                     self.tick()
 
                     self.data_memory.write(where, what)
@@ -410,7 +435,6 @@ class ControlUnit:
             self.tick()
 
             self.logger.log(LogLevel.DEBUG, Place.SYSTEM, str(self))
-
             self.handle_command()
 
     def __str__(self):
