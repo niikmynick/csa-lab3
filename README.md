@@ -117,11 +117,23 @@ comment         ::=     "#" <any symbols except "\n">
 - Подстановка адресов переменных и лейблов
 - Генерация бинарного кода
 
+```
+python assemble_unit.py <source_filepath> <target_filepath>
+```
+
 ## Модель процессора
 
 Описание реализации:
 - Процесс моделирования отслеживается по инструкциям
 
+```
+python machine.py <bin_filepath> <input_filepath> <output_filepath> <log_filepath>
+```
+
 ## Тестирование
 
 Тестирование выполняется при помощи golden тестов
+
+```
+pytest test.py
+```

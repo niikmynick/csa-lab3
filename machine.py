@@ -1,3 +1,5 @@
+from sys import argv
+
 from memory.memory import Memory
 from io_managers.input_manager import InputManager
 from io_managers.output_manager import OutputManager
@@ -56,3 +58,16 @@ class Machine:
         self.input_manager.turn_off()
         self.output_manager.turn_off()
         self.logger.turn_off()
+
+
+if __name__ == "__main__":
+    assert len(argv) == 5, "Usage: <bin_filepath> <input_filepath> <output_filepath> <log_filepath>"
+
+    target = argv[1]
+    input_stream = argv[2]
+    out_file = argv[3]
+    log_file = argv[4]
+
+    machine = Machine()
+    machine.configure(target, input_stream, out_file, log_file)
+    machine.run()
