@@ -123,6 +123,9 @@ python assemble_unit.py <source_filepath> <target_filepath>
 
 ## Модель процессора
 
+![DP.svg](schemes/DP.svg)
+![CU.svg](schemes/CU.svg)
+
 Описание реализации:
 - Процесс моделирования отслеживается по инструкциям
 - Программа выполняется последовательно
