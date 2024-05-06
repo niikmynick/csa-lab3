@@ -28,7 +28,6 @@ class Machine:
 
         self.input_manager.set_input_device(input_file)
 
-        self.output_manager.set_terminal('stdout')
         self.output_manager.set_result_filepath(out_file)
 
         input_address = self.data_memory.allocate(1)

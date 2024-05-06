@@ -21,7 +21,6 @@ def configure_io_managers(input_manager: InputManager, output_manager: OutputMan
 
     input_manager.set_input_device("a.txt")
 
-    output_manager.set_terminal('stdout')
     output_manager.set_result_filepath(result_filepath)
 
 
