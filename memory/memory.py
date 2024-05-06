@@ -27,7 +27,6 @@ class Memory:
         assert not isinstance(cell, OutputManager), "Cannot read from output manager"
 
         if isinstance(cell, InputManager):
-            cell.read()
             value = cell.get_input()
         else:
             value = cell
