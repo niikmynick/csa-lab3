@@ -23,8 +23,9 @@ out_log: |-
   DEBUG     ::     SYSTEM      ControlUnit: time=28, instructions executed=1
   INFO      ::     INSTR       Processing WRITE
   DEBUG     ::     INTER       Have 1 interruptions
-  DEBUG     ::     INTER       Processing Interruption: OUTPUT Hello, World!
-  
+  DEBUG     ::     INTER       Processing Interruption: OUTPUT
+  INFO      ::     OUTPUT      Wrote Hello, World!
+  DEBUG     ::     INTER       Finished processing Interruption: OUTPUT
   DEBUG     ::     SYSTEM      ControlUnit: time=40, instructions executed=2
   INFO      ::     INSTR       Processing HALT
   DEBUG     ::     INTER       Have 1 interruptions
@@ -33,5 +34,3 @@ out_log: |-
   INFO      ::     SYSTEM      Execution finished, state: ControlUnit: time=47, instructions executed=3
   INFO      ::     INPUT       Turning off input device.
   INFO      ::     OUTPUT      Turning off output device.
-
-
