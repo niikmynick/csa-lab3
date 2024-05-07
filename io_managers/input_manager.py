@@ -1,4 +1,4 @@
-from sys import stdin, exit
+from sys import exit
 from io_managers.logger import Logger, LogLevel, Place
 
 
@@ -14,7 +14,7 @@ class InputManager:
             temp = []
             for line in self.input_device.readlines():
                 time, value = line.strip().split(":")
-                temp.append((int(time), value))
+                temp.append((int(time), value if value != "" else " "))
 
             self.set_input(temp)
             self.logger.log(LogLevel.INFO, Place.INPUT, f'Input schedule: {temp}')

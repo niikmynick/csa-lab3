@@ -88,22 +88,28 @@ class ControlUnit:
                         self.tick()
 
                     self.logger.log(LogLevel.INFO, Place.INPUT, "Reading input")
-                    data: list = self.data_memory.read(self.input_address)
+
+                    in_buffer: list = self.data_memory.read(self.input_address)
                     self.tick()
 
-                    if data is None or len(data) == 0:
+                    if in_buffer is None or len(in_buffer) == 0:
                         interruption = Interruption(InterruptionType.ERROR, "No data available for input")
                         self._interruptions_stack.push(interruption)
                         self.tick()
                         continue
 
-                    data = list(filter(lambda mark: self.read_time < mark[0] <= self._time, data))
+                    chars = []
+                    for time, char in in_buffer:
+                        self._time = max(time, self._time)
+
+                        if char == "\\0":
+                            break
+
+                        chars.append(char)
+
                     self.tick()
 
-                    self.read_time = self._time
-                    self.tick()
-
-                    value = ''.join([mark[1] for mark in data])
+                    value = ''.join(chars)
 
                     self.logger.log(LogLevel.INFO, Place.INPUT, f"Read value: {value}")
 
@@ -119,20 +125,16 @@ class ControlUnit:
                     self.tick()
 
                 case InterruptionType.OUTPUT:
-                    if interruption.message is not None:
-                        self.data_memory.write(self.output_address, interruption.message)
+                    if interruption.message != '':
+                        value = interruption.message
+                    else:
+                        value = self._data_stack.pop()
                         self.tick()
-                        continue
-
-                    self.tick()
-
-                    self.logger.log(LogLevel.INFO, Place.OUTPUT, "Writing output")
-
-                    value = self._data_stack.pop()
-                    self.tick()
 
                     self.data_memory.write(self.output_address, value)
                     self.tick()
+
+                    self.logger.log(LogLevel.INFO, Place.OUTPUT, f"Wrote {str(value).strip()}")
 
                 case InterruptionType.HALT:
                     self._exit_flag = True
@@ -233,10 +235,7 @@ class ControlUnit:
                 self.tick()
 
             case OpCode.WRITE:
-                message = self._data_stack.pop()
-                self.tick()
-
-                interruption = Interruption(InterruptionType.OUTPUT, message)
+                interruption = Interruption(InterruptionType.OUTPUT)
                 self._interruptions_stack.push(interruption)
                 self.tick()
 
