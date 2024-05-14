@@ -6,31 +6,34 @@ class Assembler:
     def __init__(self):
         self.translator = Translator()
 
-        self.all_instructions = ["push", "pop", "read", "write", "compare", "jump", "jla", "jle", "jeq", "jne", "add",
-                                 "sub", "mul", "div", "inc", "dec", "save", "halt"]
-        self.no_op_instructions = ["pop", "read", "write", "compare", "add", "sub", "mul", "div", "inc", "dec", "halt"]
-        self.one_op_instructions = ["push", "jump", "jne", "jeq", "jla", "jle", "save"]
+        self.all_instructions = [code.name.lower() for code in OpCode]
+        self.no_op_instructions = [code.name.lower() for code in OpCode if (code.value <= 0x11 or code.value == 0x20)]
+        self.one_op_instructions = [code.name.lower() for code in OpCode if 0x14 <= code.value < 0x20]
         self.jump_instructions = ["jump", "jne", "jeq", "jla", "jle"]
+        self.system_variables = {"INPUT": 0, "OUTPUT": 1, "EXTRA": 2}
 
     def assemble(self, code_file: str, binary_file: str):
+        lines = []
         with open(code_file, "r") as file:
-            code = file.read()
+            code = file.readlines()
+            for line in code:
+                line = line.strip()
 
-        lines = code.strip().split("\n")
-        lines = list(map(str.strip, lines))
-        lines = list(filter(lambda x: x != "", lines))
-        lines = list(filter(lambda x: x[0] != "#", lines))
+                if line == "" or line.startswith("#"):
+                    continue
+
+                lines.append(line.strip())
 
         assert ".code" in lines, "No code section found"
 
         labels: dict[str, int] = {}
-        # variables = { "name": { "init_value": 0, "type": "int", "address": 0, "size": 0 }, }
+        # variables = { "name": { "init_value": 0, "type": "int", "address": 0, "size": 0 }, ... }
         variables: dict[str, dict[str, int | str]] = {}
         instructions = []
 
         data_flag = False
         instructions_counter = 0
-        memory_counter = 0
+        memory_counter = 3
 
         # syntax check
         for line in lines:
@@ -51,6 +54,9 @@ class Assembler:
                     f"Var {elements[0]} has the same name as an instruction"
                 assert not elements[0].isnumeric(), f"Variable name {elements[0]} is a number"
                 assert not elements[0][0].isdigit(), f"Variable name {elements[0]} starts with a digit"
+
+                assert elements[0] not in self.system_variables.keys(), \
+                    f"Var {elements[0]} shadows a system var"
 
                 assert elements[1].isnumeric() or elements[1].startswith('"') or elements[1].startswith("'"), \
                     f"Value for var {elements[0]} is not a number or a string"
@@ -73,14 +79,15 @@ class Assembler:
 
             else:
                 elements = line.split(" ", 1)
+                operation: str = elements[0].lower()
 
-                assert elements[0] in self.all_instructions, f"Unknown instruction {elements[0]}"
+                assert operation in self.all_instructions, f"Unknown instruction {operation}"
 
-                if elements[0] in self.no_op_instructions:
-                    assert len(elements) == 1, f"Instruction {elements[0]} does not take any operands"
+                if operation in self.no_op_instructions:
+                    assert len(elements) == 1, f"Instruction {operation} does not take any operands"
 
-                elif elements[0] in self.one_op_instructions:
-                    assert len(elements) == 2, f"Instruction {elements[0]} takes exactly one operand"
+                elif operation in self.one_op_instructions:
+                    assert len(elements) == 2, f"Instruction {operation} takes exactly one operand"
 
                     operand: str = elements[1]
 
@@ -106,21 +113,26 @@ class Assembler:
                     int_value = int(arg)
                     size = len(hex(int_value)) - 2
                     arg_type = "int"
-                    int_arg_value: dict[str, int | str] = \
-                        {"init_value": int_value, "type": arg_type, "address": memory_counter, "size": size}
+                    int_arg_value: dict[str, int | str] = {
+                        "init_value": int_value,
+                        "type": arg_type,
+                        "address": memory_counter,
+                        "size": size
+                    }
 
                     variables[name] = int_arg_value
 
                 else:
                     str_value = arg[1:-1]
-                    if "\\n" in str_value:
-                        size = len(str_value) - 1
-                        str_value = str_value.replace("\\n", "\n")
-                    else:
-                        size = len(str_value)
+                    str_value = str_value.replace("\\n", "\n")
+                    size = len(str_value)
                     arg_type = "string"
-                    str_arg_value: dict[str, int | str] = \
-                        {"init_value": str_value, "type": arg_type, "address": memory_counter, "size": size}
+                    str_arg_value: dict[str, int | str] = {
+                        "init_value": str_value,
+                        "type": arg_type,
+                        "address": memory_counter,
+                        "size": size
+                    }
 
                     variables[name] = str_arg_value
 
@@ -162,6 +174,10 @@ class Assembler:
                     instructions_counter += 1
                     continue
 
+                elif instruction_elements[1] in self.system_variables.keys():
+                    instruction_operand = self.system_variables[instruction_elements[1]]
+                    optype = OpType.ADDRESS
+
                 elif instruction_elements[1] in variables:
                     instruction_operand = int(variables[instruction_elements[1]]["address"])
                     optype = OpType.ADDRESS
@@ -169,6 +185,8 @@ class Assembler:
                 elif instruction_elements[1] in labels:
                     assert instruction_elements[0] in self.jump_instructions, \
                         f"Label {instruction_elements[1]} is not allowed in instruction {instruction_elements[0]}"
+                    assert instruction_elements[1] != "on_input", \
+                        "Label 'on_input' is reserved for interruption, don't use it as an operand"
                     instruction_operand = labels[instruction_elements[1]]
                     optype = OpType.ADDRESS
 
@@ -194,7 +212,12 @@ class Assembler:
         #
         #     file.write(text)
 
-        binary = self.translator.asm_to_binary(variables, instructions)
+        binary = b""
+        if "on_input" in labels:
+            binary += 0xFF.to_bytes(1, "big")
+            binary += labels["on_input"].to_bytes(1, "big")
+
+        binary += self.translator.asm_to_binary(variables, instructions)
 
         with open(binary_file, "wb") as file:
             file.write(binary)
@@ -223,5 +246,8 @@ class Assembler:
 
 if __name__ == '__main__':
     assembler = Assembler()
+    # print(assembler.all_instructions)
+    # print(assembler.no_op_instructions)
+    # print(assembler.one_op_instructions)
     assembler.assemble("test.asm", "test.bin")
     assembler.disassemble("test.bin", "test_dis.asm")

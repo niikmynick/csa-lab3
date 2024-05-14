@@ -2,30 +2,33 @@ from enum import Enum
 
 
 class OpCode(int, Enum):
-    PUSH = 0x01
-    JUMP = 0x02
-    JLA = 0x03
-    JLE = 0x04
-    JEQ = 0x05
-    JNE = 0x06
-    SAVE = 0x07
-
-    POP = 0x10
-    COMPARE = 0x11
-
-    READ = 0x20
-    WRITE = 0x21
-
-    ADD = 0x31
-    SUB = 0x32
-    MUL = 0x33
-    DIV = 0x34
-    INC = 0x35
-    DEC = 0x36
-
-    HALT = 0x40
-
     NOPE = 0x00
+
+    POP = 0x01
+    COMPARE = 0x02
+    DUPLICATE = 0x03
+    RETURN = 0x04
+
+    ADD = 0x05
+    SUB = 0x06
+    MUL = 0x07
+    DIV = 0x08
+    INC = 0x09
+    DEC = 0x10
+
+    SWAP = 0x11
+
+    READ = 0x12
+    SAVE = 0x13
+    PUSH = 0x14
+
+    JUMP = 0x15
+    JLA = 0x16
+    JLE = 0x17
+    JEQ = 0x18
+    JNE = 0x19
+
+    HALT = 0x20
 
     def __str__(self):
         return self.name.lower()
