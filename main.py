@@ -24,28 +24,22 @@ def configure_io_managers(input_manager: InputManager, output_manager: OutputMan
     output_manager.set_result_filepath(result_filepath)
 
 
-def mapped_io_addresses(data_memory: Memory, input_manager: InputManager, output_manager: OutputManager):
+def map_io_devices(data_memory: Memory, input_manager: InputManager, output_manager: OutputManager):
     input_address = data_memory.allocate(1)
     data_memory.write(input_address, input_manager)
 
     output_address = data_memory.allocate(1)
     data_memory.write(output_address, output_manager)
 
-    return [input_address, output_address]
 
-
-def connect_memory_units(processor: ControlUnit, loader: Loader, instruction_memory: Memory, data_memory: Memory):
+def connect_units(processor: ControlUnit, loader: Loader, instruction_memory: Memory, data_memory: Memory):
     processor.connect_instructions_memory(instruction_memory)
     processor.connect_data_memory(data_memory)
 
     loader.connect_instructions_memory(instruction_memory)
     loader.connect_data_memory(data_memory)
 
-
-def configure_control_unit(processor: ControlUnit, base_pointer: int, input_address: int, output_address: int):
-    processor.set_base_pointer(base_pointer)
-    processor.set_input_address(input_address)
-    processor.set_output_address(output_address)
+    loader.connect_control_unit(processor)
 
 
 def preprocess_code(assembler: Assembler, loader: Loader, test_name: str):
@@ -76,12 +70,11 @@ def main(test_name: str):
     assembler = Assembler()
 
     configure_io_managers(input_manager, output_manager, logger, test_name)
-    input_address, output_address = mapped_io_addresses(data_memory, input_manager, output_manager)
-    base_pointer = data_memory.get_last_allocated()
+    map_io_devices(data_memory, input_manager, output_manager)
 
     processor.set_logger(logger)
-    connect_memory_units(processor, loader, instruction_memory, data_memory)
-    configure_control_unit(processor, base_pointer, input_address, output_address)
+    processor.set_schedule([element[0] for element in input_manager.get_input()])
+    connect_units(processor, loader, instruction_memory, data_memory)
 
     preprocess_code(assembler, loader, test_name)
 
@@ -91,4 +84,4 @@ def main(test_name: str):
 
 
 if __name__ == '__main__':
-    main("prob5")
+    main("prob1")

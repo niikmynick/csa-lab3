@@ -1,5 +1,19 @@
 .code
-    read
-    write
+    loop:
+        jump loop
 
-    halt
+    end:
+        halt
+
+    on_input:
+        read INPUT
+        duplicate
+
+        push 0
+        compare
+
+        jeq end
+
+        save OUTPUT
+
+        return

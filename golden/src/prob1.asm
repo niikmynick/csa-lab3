@@ -6,10 +6,10 @@
 .code
     loop:
     # actual number to check
-        push i
+        read i
 
     # check if the number below limit
-        push limit
+        read limit
         compare
 
     # break loop3 and start loop5
@@ -17,10 +17,10 @@
 
 
     # check if i is divisible by 3
-        push i
+        read i
+        duplicate
 
     # calculate i // 3
-        push i
         push 3
         div
 
@@ -40,9 +40,9 @@
 
 
     # also with 5
-        push i
+        read i
+        duplicate
 
-        push i
         push 5
         div
 
@@ -61,38 +61,73 @@
 
     good:
     # sum += i
-        push sum
-        push i
+        read sum
+        read i
         add
         save sum
 
-    # remove sum from stack
-        pop
-
     # increment the i value (get next number)
-        push i
+        read i
         inc
         save i
-
-    # remove i from stack
-        pop
 
     # continue
         jump loop
 
 
     bad:
-        push i
+        read i
         inc
         save i
-
-        pop
 
         jump loop
 
 
     finish:
-        push sum
-        write
+        push -1
+        read sum
+        jump prepare_num
 
+    # i - (i // 3) * 3
+    # i 3 i 3 // * -
+    prepare_num:
+        duplicate
+        push 10
+        read sum
+        push 10
+        div
+        mul
+        sub
+
+        push 48
+        add
+        swap
+
+        push 10
+        div
+        duplicate
+        SAVE sum
+
+        duplicate
+        inc
+        push 1
+        compare
+        jeq then
+
+        jump prepare_num
+
+    then:
+        pop
+        jump print_num
+
+    print_num:
+        duplicate
+        push -1
+        compare
+        jeq end
+
+        SAVE OUTPUT
+        jump print_num
+
+    end:
         halt

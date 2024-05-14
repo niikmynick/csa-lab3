@@ -14,6 +14,10 @@ class InputManager:
             temp = []
             for line in self.input_device.readlines():
                 time, value = line.strip().split(":")
+
+                if value == "\\0":
+                    value = '\0'
+
                 temp.append((int(time), value if value != "" else " "))
 
             self.set_input(temp)
@@ -29,6 +33,9 @@ class InputManager:
 
     def set_input(self, arg):
         self._input = arg
+
+    def read(self):
+        return ord(self._input.pop(0)[1])
 
     def turn_off(self):
         if self.input_device is not None:

@@ -2,7 +2,7 @@ from memory.stack import Stack
 from cpu.alu import ALU
 from cpu.interruption import Interruption, InterruptionType
 from memory.memory import Memory
-from asm.instruction import Instruction, OpCode, OpType, DataType
+from asm.instruction import Instruction, OpCode, OpType
 from io_managers.logger import Logger, LogLevel, Place
 
 
@@ -15,7 +15,7 @@ class ControlUnit:
         self._interruption_flag = False
 
         self._data_stack = Stack()
-        self._instructions_stack = Stack()
+        self._return_stack = Stack()
         self._interruptions_stack = Stack()
         self.alu = ALU()
 
@@ -24,22 +24,14 @@ class ControlUnit:
 
         self.logger = None
 
-        self.input_address = None
-        self.output_address = None
-        self.base_pointer = None
-        self.read_time = 0
+        self.interruption_vec = None
+        self.interruption_times = []
 
     def set_logger(self, logger: Logger):
         self.logger = logger
 
-    def set_input_address(self, input_address: int):
-        self.input_address = input_address
-
-    def set_output_address(self, output_address: int):
-        self.output_address = output_address
-
-    def set_base_pointer(self, base_pointer: int):
-        self.base_pointer = base_pointer
+    def set_schedule(self, schedule: list[int]):
+        self.interruption_times = schedule
 
     def connect_instructions_memory(self, instructions_memory: Memory):
         self.instructions_memory = instructions_memory
@@ -66,6 +58,10 @@ class ControlUnit:
         self._instruction_counter += 1
         self.tick()
 
+    def increment_command_pointer(self):
+        self._command_pointer += 1
+        self.tick()
+
     def get_instruction_counter(self) -> int:
         return self._instruction_counter
 
@@ -83,65 +79,19 @@ class ControlUnit:
 
             match interruption.interruption_type:
                 case InterruptionType.INPUT:
-                    if interruption.message is not None:
-                        self.data_memory.write(self.output_address, interruption.message)
-                        self.tick()
-
-                    self.logger.log(LogLevel.INFO, Place.INPUT, "Reading input")
-
-                    in_buffer: list = self.data_memory.read(self.input_address)
-                    self.tick()
-
-                    if in_buffer is None or len(in_buffer) == 0:
-                        interruption = Interruption(InterruptionType.ERROR, "No data available for input")
-                        self._interruptions_stack.push(interruption)
-                        self.tick()
+                    if self.interruption_vec is None:
                         continue
 
-                    chars = []
-                    for time, char in in_buffer:
-                        self._time = max(time, self._time)
-
-                        if char == "\\0":
-                            break
-
-                        chars.append(char)
-
+                    self._return_stack.push(self._command_pointer)
                     self.tick()
 
-                    value = ''.join(chars)
-
-                    self.logger.log(LogLevel.INFO, Place.INPUT, f"Read value: {value}")
-
+                    self._command_pointer = self.interruption_vec
                     self.tick()
 
-                    if value.isnumeric():
-                        self._data_stack.push(int(value))
-                        self.tick()
-
-                    else:
-                        self._data_stack.push(value)
-
-                    self.tick()
-
-                case InterruptionType.OUTPUT:
-                    if interruption.message != '':
-                        value = interruption.message
-                    else:
-                        value = self._data_stack.pop()
-                        self.tick()
-
-                    self.data_memory.write(self.output_address, value)
-                    self.tick()
-
-                    self.logger.log(LogLevel.INFO, Place.OUTPUT, f"Wrote {str(value).strip()}")
-
-                case InterruptionType.HALT:
-                    self._exit_flag = True
-                    self.tick()
-
-                    self.logger.log(LogLevel.INFO, Place.SYSTEM, "Halting")
-                    break
+                    flow_changed = self.handle_command()
+                    while not flow_changed:
+                        self.increment_command_pointer()
+                        flow_changed = self.handle_command()
 
                 case InterruptionType.ERROR:
                     self.logger.log(LogLevel.ERROR, Place.SYSTEM, f"Error: {interruption.message}")
@@ -150,71 +100,41 @@ class ControlUnit:
                     self._interruptions_stack.push(interruption_halt)
                     self.tick()
 
-                    interruption_output = Interruption(InterruptionType.OUTPUT,
-                                                       f"An error occurred: {interruption.message}")
-                    self._interruptions_stack.push(interruption_output)
+                case InterruptionType.HALT:
+                    self._exit_flag = True
                     self.tick()
 
-            self.logger.log(LogLevel.DEBUG, Place.INTER, f"Finished processing {interruption}")
+                    self.logger.log(LogLevel.INFO, Place.SYSTEM, "Halting")
+                    break
 
         self._interruption_flag = False
         self.tick()
 
     def handle_command(self):
-        instruction = self._instructions_stack.pop()
-
+        instruction: Instruction = self.instructions_memory.read(self._command_pointer)
         self.tick()
 
         opcode = instruction.opcode
         operand = instruction.operand
         optype = instruction.operand_type
-        datatype = instruction.data_type
 
+        flow_changed = False
+
+        self.logger.log(LogLevel.DEBUG, Place.SYSTEM, f"Data stack: {self._data_stack}")
+        self.logger.log(LogLevel.DEBUG, Place.SYSTEM, str(self))
         self.logger.log(LogLevel.INFO, Place.INSTR, f"Processing {opcode.name}" +
                         (f" {optype.name} {operand}" if optype != OpType.NOPE else ""))
 
         match opcode:
             case OpCode.PUSH:
-                if optype == OpType.VALUE:
-                    self._data_stack.push(operand)
-                    self.tick()
+                self._data_stack.push(operand)
+                self.tick()
 
-                elif optype == OpType.ADDRESS:
-                    if datatype == DataType.INT:
-                        value = self.data_memory.read(operand)
-                        self.tick()
+            case OpCode.DUPLICATE:
+                value = self._data_stack.peek()
+                self.tick()
 
-                        if value is None:
-                            interruption = Interruption(InterruptionType.ERROR, "No value at address")
-                            self._interruptions_stack.push(interruption)
-                            self.tick()
-                        else:
-                            self._data_stack.push(value)
-                            self.tick()
-
-                    elif datatype == DataType.STRING:
-                        temp = 0
-                        temp += operand
-
-                        symbol = self.data_memory.read(temp)
-                        self.tick()
-
-                        if symbol is None:
-                            interruption = Interruption(InterruptionType.ERROR, "No value at address")
-                            self._interruptions_stack.push(interruption)
-                            self.tick()
-                            return
-
-                        value = ""
-
-                        while symbol != ord('\0'):
-                            value += chr(symbol)
-                            temp += 1
-                            symbol = self.data_memory.read(temp)
-                            self.tick()
-
-                        self._data_stack.push(value)
-
+                self._data_stack.push(value)
                 self.tick()
 
             case OpCode.POP:
@@ -230,13 +150,16 @@ class ControlUnit:
                 self.tick()
 
             case OpCode.READ:
-                interruption = Interruption(InterruptionType.INPUT)
-                self._interruptions_stack.push(interruption)
-                self.tick()
+                if optype == OpType.NOPE:
+                    address = self._data_stack.pop()
+                    self.tick()
+                    value = self.data_memory.read(address)
+                    self.tick()
+                else:
+                    value = self.data_memory.read(operand)
+                    self.tick()
 
-            case OpCode.WRITE:
-                interruption = Interruption(InterruptionType.OUTPUT)
-                self._interruptions_stack.push(interruption)
+                self._data_stack.push(value)
                 self.tick()
 
             case OpCode.COMPARE:
@@ -254,40 +177,39 @@ class ControlUnit:
                 self.tick()
 
             case OpCode.JUMP:
-                command = self.instructions_memory.read(operand)
+                self._command_pointer = operand
                 self.tick()
-
-                self._instructions_stack.push(command)
-                self.tick()
-
-                self._command_pointer = operand + 1
-                self.tick()
+                flow_changed = True
 
             case OpCode.JLA:
                 if not self.alu.zero and not self.alu.negative:
-                    self._instructions_stack.push(Instruction(OpCode.JUMP, operand, OpType.ADDRESS))
+                    self._command_pointer = operand
                     self.tick()
+                    flow_changed = True
 
                 self.tick()
 
             case OpCode.JLE:
                 if self.alu.negative:
-                    self._instructions_stack.push(Instruction(OpCode.JUMP, operand, OpType.ADDRESS))
+                    self._command_pointer = operand
                     self.tick()
+                    flow_changed = True
 
                 self.tick()
 
             case OpCode.JEQ:
                 if self.alu.zero:
-                    self._instructions_stack.push(Instruction(OpCode.JUMP, operand, OpType.ADDRESS))
+                    self._command_pointer = operand
                     self.tick()
+                    flow_changed = True
 
                 self.tick()
 
             case OpCode.JNE:
                 if not self.alu.zero:
-                    self._instructions_stack.push(Instruction(OpCode.JUMP, operand, OpType.ADDRESS))
+                    self._command_pointer = operand
                     self.tick()
+                    flow_changed = True
 
                 self.tick()
 
@@ -372,22 +294,42 @@ class ControlUnit:
                 self._data_stack.push(self.alu.result)
                 self.tick()
 
+            case OpCode.SWAP:
+                b = self._data_stack.pop()
+                self.tick()
+                a = self._data_stack.pop()
+                self.tick()
+
+                self._data_stack.push(b)
+                self.tick()
+
+                self._data_stack.push(a)
+                self.tick()
+
             case OpCode.SAVE:
                 if self._data_stack.is_empty():
                     interruption = Interruption(InterruptionType.ERROR, "Stack is empty")
                     self._interruptions_stack.push(interruption)
                     self.tick()
                 else:
-                    what = self._data_stack.peek()
-                    self.tick()
+                    if optype == OpType.NOPE:
+                        where = self._data_stack.pop()
+                        self.tick()
+                    else:
+                        where = operand
 
-                    where = operand
+                    what = self._data_stack.pop()
                     self.tick()
 
                     self.data_memory.write(where, what)
                     self.tick()
 
                 self.tick()
+
+            case OpCode.RETURN:
+                self._command_pointer = self._return_stack.pop()
+                self.tick()
+                flow_changed = True
 
             case OpCode.HALT:
                 interruption = Interruption(InterruptionType.HALT)
@@ -399,45 +341,43 @@ class ControlUnit:
                 self._interruptions_stack.push(interruption)
                 self.tick()
 
-        self.increment_instruction_counter()
+        return flow_changed
 
     def run(self):
         self.logger.log(LogLevel.INFO, Place.SYSTEM, "Starting execution")
 
         assert self.instructions_memory is not None, "Instructions memory is not connected"
         assert self.data_memory is not None, "Data memory is not connected"
-        assert self.input_address is not None, "Input address is not set"
-        assert self.output_address is not None, "Output address is not set"
-        assert self.base_pointer is not None, "Base pointer is not set"
 
         self.logger.log(LogLevel.DEBUG, Place.SYSTEM, f"Initial state: {self}")
         self.logger.log(LogLevel.DEBUG, Place.SYSTEM, f"Instructions memory: {self.instructions_memory}")
         self.logger.log(LogLevel.DEBUG, Place.SYSTEM, f"Data memory: {self.data_memory}")
 
         while True:
+            if self.interruption_times and self._time >= self.interruption_times[0]:
+                self.interruption_times.pop(0)
+                self.tick()
+
+                interruption = Interruption(InterruptionType.INPUT)
+                self._interruptions_stack.push(interruption)
+                self.tick()
+
             self.handle_interruption()
 
             if self._exit_flag:
                 self.logger.log(LogLevel.INFO, Place.SYSTEM, f"Execution finished, state: {self}")
                 break
 
-            if self._instructions_stack.is_empty():
-                command = self.instructions_memory.read(self._command_pointer)
-                self.tick()
+            flow_changed = self.handle_command()
+            self.increment_instruction_counter()
 
-                self._instructions_stack.push(command)
-                self.tick()
-
-                self._command_pointer += 1
-                self.tick()
-
-            self.tick()
-
-            self.logger.log(LogLevel.DEBUG, Place.SYSTEM, str(self))
-            self.handle_command()
+            if not flow_changed:
+                self.increment_command_pointer()
 
     def __str__(self):
-        return f"ControlUnit: time={self._time}, instructions executed={self._instruction_counter}"
+        return (f"ControlUnit: time={self._time}, "
+                f"instructions executed={self._instruction_counter}, "
+                f"interruption = {self._interruption_flag}")
 
     def __repr__(self):
         return str(self)

@@ -6,18 +6,18 @@
 
 .code
     i_loop:
-        push i
-        push max
+        read i
+        read max
         compare
         jla finish
 
-        push number
+        read number
 
-        push number
-        push i
+        read number
+        read i
         div
 
-        push i
+        read i
         mul
 
         sub
@@ -29,23 +29,23 @@
         jump i_next
 
     j_loop:
-        push j
-        push i
+        read j
+        read i
         compare
 
         jla i_next
 
-        push number
-        push j
+        read number
+        read j
         mul
 
-        push number
-        push j
+        read number
+        read j
         mul
-        push i
+        read i
         div
 
-        push i
+        read i
         mul
 
         sub
@@ -58,36 +58,76 @@
         jump j_next
 
     number_update:
-        push number
-        push j
+        read number
+        read j
         mul
         save number
 
         jump i_next
 
     i_next:
-        push i
+        read i
         inc
         save i
-        pop
 
         push 2
         save j
-        pop
 
         jump i_loop
 
     j_next:
-        push j
+        read j
         inc
         save j
-        pop
 
         jump j_loop
 
 
     finish:
-        push number
-        write
+        push -1
+        read number
+        jump prepare_num
 
+    # i - (i // 3) * 3
+    # i 3 i 3 // * -
+    prepare_num:
+        duplicate
+        push 10
+        read number
+        push 10
+        div
+        mul
+        sub
+
+        push 48
+        add
+        swap
+
+        push 10
+        div
+        duplicate
+        SAVE number
+
+        duplicate
+        inc
+        push 1
+        compare
+        jeq then
+
+        jump prepare_num
+
+    then:
+        pop
+        jump print_num
+
+    print_num:
+        duplicate
+        push -1
+        compare
+        jeq end
+
+        SAVE OUTPUT
+        jump print_num
+
+    end:
         halt

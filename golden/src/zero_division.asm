@@ -3,6 +3,6 @@
     push 0
     div
 
-    write
+    save OUTPUT
 
     halt

@@ -15,8 +15,8 @@ class OutputManager:
         except FileNotFoundError:
             exit(1)
 
-    def write(self, data: str):
-        self.output_device.write(data)
+    def write(self, data):
+        self.output_device.write(chr(data))
         self.output_device.flush()
 
     def turn_off(self):

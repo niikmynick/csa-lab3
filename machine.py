@@ -36,9 +36,8 @@ class Machine:
         output_address = self.data_memory.allocate(1)
         self.data_memory.write(output_address, self.output_manager)
 
-        base_pointer = self.data_memory.get_last_allocated()
-
         self.processor.set_logger(self.logger)
+        self.processor.set_schedule([element[0] for element in self.input_manager.get_input()])
 
         self.processor.connect_instructions_memory(self.instruction_memory)
         self.processor.connect_data_memory(self.data_memory)
@@ -46,14 +45,13 @@ class Machine:
         self.loader.connect_instructions_memory(self.instruction_memory)
         self.loader.connect_data_memory(self.data_memory)
 
-        self.processor.set_base_pointer(base_pointer)
-        self.processor.set_input_address(input_address)
-        self.processor.set_output_address(output_address)
+        self.loader.connect_control_unit(self.processor)
 
         self.loader.load(bin_file)
 
     def run(self):
         self.processor.run()
+
         self.input_manager.turn_off()
         self.output_manager.turn_off()
         self.logger.turn_off()

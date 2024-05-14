@@ -2,19 +2,106 @@
     name_request "What is your name?\n"
     welcome_beginning "Hello, "
     exclamation_point "!\n"
+    name_ptr 1
 
 .code
-    push name_request
-    write
+    read EXTRA
+    save name_ptr
 
-    read
+    ask:
+        push name_request
+        jump loop
 
-    push welcome_beginning
-    write
+    await_name:
+        jump await_name
 
-    write
+    hello:
+        push welcome_beginning
+        jump loop2
 
-    push exclamation_point
-    write
+    name:
+        read EXTRA
+        duplicate
+        jump loop3
 
-    halt
+    excl:
+        push exclamation_point
+        jump loop4
+
+    end:
+        halt
+
+    loop:
+        duplicate
+        read
+
+        duplicate
+        push 0
+        compare
+        jeq await_name
+
+        save OUTPUT
+        inc
+
+        jump loop
+
+    loop2:
+        duplicate
+        read
+
+        duplicate
+        push 0
+        compare
+        jeq name
+
+        save OUTPUT
+        inc
+
+        jump loop2
+
+    loop3:
+        duplicate
+        read
+
+        duplicate
+        push 0
+        compare
+        jeq excl
+
+        save OUTPUT
+        inc
+
+        jump loop3
+
+
+    loop4:
+        duplicate
+        read
+
+        duplicate
+        push 0
+        compare
+        jeq end
+
+        save OUTPUT
+        inc
+
+        jump loop4
+
+    on_input:
+        read INPUT
+        duplicate
+
+        read name_ptr
+        save
+
+        push 0
+        compare
+
+        jeq hello
+
+        read name_ptr
+        inc
+        save name_ptr
+
+        return
