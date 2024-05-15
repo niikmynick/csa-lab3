@@ -84,4 +84,4 @@ def main(test_name: str):
 
 
 if __name__ == '__main__':
-    main("prob1")
+    main("cat")

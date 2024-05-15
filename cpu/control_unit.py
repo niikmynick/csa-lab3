@@ -4,7 +4,7 @@ from cpu.interruption import Interruption, InterruptionType
 from memory.memory import Memory
 from asm.instruction import Instruction, OpCode, OpType
 from io_managers.logger import Logger, LogLevel, Place
-
+from exceptions import EmptyStackException
 
 class ControlUnit:
     def __init__(self):
@@ -91,6 +91,7 @@ class ControlUnit:
                     flow_changed = self.handle_command()
                     while not flow_changed:
                         self.increment_command_pointer()
+                        self.increment_instruction_counter()
                         flow_changed = self.handle_command()
 
                 case InterruptionType.ERROR:
@@ -307,11 +308,7 @@ class ControlUnit:
                 self.tick()
 
             case OpCode.SAVE:
-                if self._data_stack.is_empty():
-                    interruption = Interruption(InterruptionType.ERROR, "Stack is empty")
-                    self._interruptions_stack.push(interruption)
-                    self.tick()
-                else:
+                try:
                     if optype == OpType.NOPE:
                         where = self._data_stack.pop()
                         self.tick()
@@ -324,6 +321,11 @@ class ControlUnit:
                     self.data_memory.write(where, what)
                     self.tick()
 
+                except EmptyStackException:
+                    interruption = Interruption(InterruptionType.ERROR, "Stack is empty")
+                    self._interruptions_stack.push(interruption)
+                    self.tick()
+
                 self.tick()
 
             case OpCode.RETURN:
@@ -334,6 +336,9 @@ class ControlUnit:
             case OpCode.HALT:
                 interruption = Interruption(InterruptionType.HALT)
                 self._interruptions_stack.push(interruption)
+                self.tick()
+
+            case OpCode.NOP:
                 self.tick()
 
             case _:

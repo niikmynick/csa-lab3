@@ -2,8 +2,6 @@ from enum import Enum
 
 
 class OpCode(int, Enum):
-    NOPE = 0x00
-
     POP = 0x01
     COMPARE = 0x02
     DUPLICATE = 0x03
@@ -29,6 +27,8 @@ class OpCode(int, Enum):
     JNE = 0x19
 
     HALT = 0x20
+
+    NOP = 0x30
 
     def __str__(self):
         return self.name.lower()
@@ -74,7 +74,7 @@ def get_opcode_by_name(name: str) -> OpCode:
     for op in OpCode:
         if op.name.lower() == name.lower():
             return op
-    return OpCode.NOPE
+    return OpCode.NOP
 
 
 if __name__ == "__main__":
