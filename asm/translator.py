@@ -64,68 +64,63 @@ class Translator:
 
         return binary_code
 
-    @staticmethod
-    def binary_to_variables(binary: bytes) -> dict:
-        variables = {}
-        i = 0
-
-        while i < len(binary):
-            address = binary[i]
-            size = binary[i + 1]
-            data_type = binary[i + 2]
-            init_value = int.from_bytes(binary[i + 3:i + 3 + size], "big")
-
-            variables[address] = {"init_value": init_value, "address": address, "size": size}
-
-            i += 3 + size + 1
-
-        return variables
-
-    @staticmethod
-    def binary_to_instructions(binary: bytes) -> dict[int, Instruction]:
-        instructions: dict[int, Instruction] = {}
-        i = 0
-
-        while i < len(binary):
-            opcode = OpCode(binary[i])
-            operand_type = OpType(binary[i + 1])
-            operand = int.from_bytes(binary[i + 2:i + 8], "big")
-
-            if operand_type == OpType.NOPE:
-                instructions[len(instructions)] = Instruction(opcode)
-
-            else:
-                instructions[len(instructions)] = Instruction(opcode, operand, operand_type)
-
-            i += 8 + 1
-
-        return instructions
-
     def binary_to_asm(self, binary: bytes) -> list[dict]:
+        data = {}
+        code: dict[int, Instruction] = {}
+
         data_flag = False
-        code_flag = False
-        data_bytes = b""
-        code_bytes = b""
 
-        if binary[0] == self.INTERRUPTION_MARKER:
-            binary = binary[2:]
-
-        for byte in binary:
-            if byte == self.DATA_SECTION_MARKER and not code_flag:
+        i = 0
+        while i < len(binary):
+            if binary[i] == self.DATA_SECTION_MARKER:
                 data_flag = True
+                i += 1
                 continue
 
-            if byte == self.CODE_SECTION_MARKER:
+            if binary[i] == self.CODE_SECTION_MARKER:
                 data_flag = False
-                code_flag = True
+                i += 1
+                continue
+
+            if binary[i] == self.INTERRUPTION_MARKER:
+                data_flag = False
+                i += 2
                 continue
 
             if data_flag:
-                data_bytes += bytes([byte])
-            else:
-                code_bytes += bytes([byte])
+                address = binary[i]
+                size = binary[i + 1]
+                data_type = binary[i + 2]
 
-        data = self.binary_to_variables(data_bytes)
-        code = self.binary_to_instructions(code_bytes)
+                if data_type == DataType.STRING.value:
+                    str_value = binary[i + 3:i + 3 + size].decode('utf-8')
+                    data[address] = str_value
+
+                else:
+                    int_value = int.from_bytes(binary[i + 3:i + 3 + size], byteorder='big', signed=True)
+                    data[address] = int_value
+
+                i += 3 + size + 1
+
+            else:
+                opcode = binary[i]
+                operand_type = binary[i + 1]
+                operand = int.from_bytes(binary[i + 2:i + 8], "big", signed=True)
+
+                match operand_type:
+                    case OpType.NOPE.value:
+                        code[len(code)] = Instruction(opcode=OpCode(opcode))
+                    case OpType.VALUE.value:
+                        code[len(code)] = Instruction(opcode=OpCode(opcode),
+                                                      operand=operand,
+                                                      operand_type=OpType(operand_type),
+                                                      data_type=DataType.INT)
+                    case OpType.ADDRESS.value:
+                        code[len(code)] = Instruction(opcode=OpCode(opcode),
+                                                      operand=operand,
+                                                      operand_type=OpType(operand_type),
+                                                      data_type=DataType.INT)
+
+                i += 8 + 1
 
         return [data, code]

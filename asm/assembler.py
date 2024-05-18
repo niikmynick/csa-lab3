@@ -229,8 +229,8 @@ class Assembler:
         data, code = self.translator.binary_to_asm(binary)
 
         text = f".data\n"
-        for address, variable in data.items():
-            text += f"{address} {variable['init_value']}\n"
+        for address, value in data.items():
+            text += f"{address} {value}\n"
 
         text += f".code\n"
         for instruction in code.values():
