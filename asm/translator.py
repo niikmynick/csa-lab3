@@ -98,7 +98,7 @@ class Translator:
 
                 else:
                     int_value = int.from_bytes(binary[i + 3:i + 3 + size], byteorder='big', signed=True)
-                    data[address] = int_value
+                    data[address] = str(int_value)
 
                 i += 3 + size + 1
 
