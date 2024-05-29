@@ -88,8 +88,8 @@
         read number
         jump prepare_num
 
-    # i - (i // 3) * 3
-    # i 3 i 3 // * -
+    # i - (i // 10) * 10
+    # i 10 i 10 // * -
     prepare_num:
         duplicate
         push 10

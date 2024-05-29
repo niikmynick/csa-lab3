@@ -35,630 +35,481 @@ out_log: |-
   DEBUG     ::     SYSTEM      Initial state: ControlUnit: time=0, instructions executed=0, interruption = False
   DEBUG     ::     SYSTEM      Instructions memory: {0: PUSH $3 - 1413, 1: DUPLICATE - 33, 2: READ - 123, 3: DUPLICATE - 33, 4: PUSH 0 - 1420, 5: COMPARE - 23, 6: JEQ $11 - 181b, 7: JUMP $8 - 1518, 8: SAVE $1 - 1311, 9: INC - 93, 10: JUMP $1 - 1511, 11: HALT - 203}
   DEBUG     ::     SYSTEM      Data memory: {0: InputManager, 1: OutputManager, 2: 18, 3: 72, 4: 101, 5: 108, 6: 108, 7: 111, 8: 44, 9: 32, 10: 87, 11: 111, 12: 114, 13: 108, 14: 100, 15: 33, 16: 10, 17: 0, 18: None, 19: None, 20: None, 21: None, 22: None, 23: None, 24: None, 25: None, 26: None, 27: None, 28: None, 29: None, 30: None, 31: None, 32: None, 33: None, 34: None, 35: None, 36: None, 37: None, 38: None, 39: None, 40: None, 41: None, 42: None, 43: None, 44: None, 45: None, 46: None, 47: None, 48: None, 49: None, 50: None, 51: None, 52: None, 53: None, 54: None, 55: None, 56: None, 57: None, 58: None, 59: None, 60: None, 61: None, 62: None, 63: None, 64: None, 65: None, 66: None, 67: None, 68: None, 69: None, 70: None, 71: None, 72: None, 73: None, 74: None, 75: None, 76: None, 77: None, 78: None, 79: None, 80: None, 81: None, 82: None, 83: None, 84: None, 85: None, 86: None, 87: None, 88: None, 89: None, 90: None, 91: None, 92: None, 93: None, 94: None, 95: None, 96: None, 97: None, 98: None, 99: None, 100: None, 101: None, 102: None, 103: None, 104: None, 105: None, 106: None, 107: None, 108: None, 109: None, 110: None, 111: None, 112: None, 113: None, 114: None, 115: None, 116: None, 117: None, 118: None, 119: None, 120: None, 121: None, 122: None, 123: None, 124: None, 125: None, 126: None, 127: None, 128: None, 129: None, 130: None, 131: None, 132: None, 133: None, 134: None, 135: None, 136: None, 137: None, 138: None, 139: None, 140: None, 141: None, 142: None, 143: None, 144: None, 145: None}
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: []
-  DEBUG     ::     SYSTEM      ControlUnit: time=2, instructions executed=0, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=1, instructions executed=0, interruption = False
   INFO      ::     INSTR       Processing PUSH ADDRESS 3
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [3]
-  DEBUG     ::     SYSTEM      ControlUnit: time=7, instructions executed=1, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=5, instructions executed=1, interruption = False
   INFO      ::     INSTR       Processing DUPLICATE
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [3, 3]
-  DEBUG     ::     SYSTEM      ControlUnit: time=13, instructions executed=2, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=10, instructions executed=2, interruption = False
   INFO      ::     INSTR       Processing READ
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [3, 72]
-  DEBUG     ::     SYSTEM      ControlUnit: time=20, instructions executed=3, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=16, instructions executed=3, interruption = False
   INFO      ::     INSTR       Processing DUPLICATE
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [3, 72, 72]
-  DEBUG     ::     SYSTEM      ControlUnit: time=26, instructions executed=4, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=21, instructions executed=4, interruption = False
   INFO      ::     INSTR       Processing PUSH VALUE 0
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [3, 72, 72, 0]
-  DEBUG     ::     SYSTEM      ControlUnit: time=31, instructions executed=5, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=25, instructions executed=5, interruption = False
   INFO      ::     INSTR       Processing COMPARE
   DEBUG     ::     ALU         Comparing 72 and 0
-  DEBUG     ::     INTER       Have 0 interruptions
-  DEBUG     ::     SYSTEM      Data stack: [3, 72]
-  DEBUG     ::     SYSTEM      ControlUnit: time=38, instructions executed=6, interruption = False
+  DEBUG     ::     SYSTEM      Data stack: [3, 72, 1]
+  DEBUG     ::     SYSTEM      ControlUnit: time=32, instructions executed=6, interruption = False
   INFO      ::     INSTR       Processing JEQ ADDRESS 11
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [3, 72]
-  DEBUG     ::     SYSTEM      ControlUnit: time=43, instructions executed=7, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=37, instructions executed=7, interruption = False
   INFO      ::     INSTR       Processing JUMP ADDRESS 8
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [3, 72]
-  DEBUG     ::     SYSTEM      ControlUnit: time=47, instructions executed=8, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=40, instructions executed=8, interruption = False
   INFO      ::     INSTR       Processing SAVE ADDRESS 1
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [3]
-  DEBUG     ::     SYSTEM      ControlUnit: time=54, instructions executed=9, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=46, instructions executed=9, interruption = False
   INFO      ::     INSTR       Processing INC
   DEBUG     ::     ALU         Incrementing 3
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [4]
-  DEBUG     ::     SYSTEM      ControlUnit: time=61, instructions executed=10, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=52, instructions executed=10, interruption = False
   INFO      ::     INSTR       Processing JUMP ADDRESS 1
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [4]
-  DEBUG     ::     SYSTEM      ControlUnit: time=65, instructions executed=11, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=55, instructions executed=11, interruption = False
   INFO      ::     INSTR       Processing DUPLICATE
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [4, 4]
-  DEBUG     ::     SYSTEM      ControlUnit: time=71, instructions executed=12, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=60, instructions executed=12, interruption = False
   INFO      ::     INSTR       Processing READ
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [4, 101]
-  DEBUG     ::     SYSTEM      ControlUnit: time=78, instructions executed=13, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=66, instructions executed=13, interruption = False
   INFO      ::     INSTR       Processing DUPLICATE
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [4, 101, 101]
-  DEBUG     ::     SYSTEM      ControlUnit: time=84, instructions executed=14, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=71, instructions executed=14, interruption = False
   INFO      ::     INSTR       Processing PUSH VALUE 0
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [4, 101, 101, 0]
-  DEBUG     ::     SYSTEM      ControlUnit: time=89, instructions executed=15, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=75, instructions executed=15, interruption = False
   INFO      ::     INSTR       Processing COMPARE
   DEBUG     ::     ALU         Comparing 101 and 0
-  DEBUG     ::     INTER       Have 0 interruptions
-  DEBUG     ::     SYSTEM      Data stack: [4, 101]
-  DEBUG     ::     SYSTEM      ControlUnit: time=96, instructions executed=16, interruption = False
+  DEBUG     ::     SYSTEM      Data stack: [4, 101, 1]
+  DEBUG     ::     SYSTEM      ControlUnit: time=82, instructions executed=16, interruption = False
   INFO      ::     INSTR       Processing JEQ ADDRESS 11
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [4, 101]
-  DEBUG     ::     SYSTEM      ControlUnit: time=101, instructions executed=17, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=87, instructions executed=17, interruption = False
   INFO      ::     INSTR       Processing JUMP ADDRESS 8
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [4, 101]
-  DEBUG     ::     SYSTEM      ControlUnit: time=105, instructions executed=18, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=90, instructions executed=18, interruption = False
   INFO      ::     INSTR       Processing SAVE ADDRESS 1
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [4]
-  DEBUG     ::     SYSTEM      ControlUnit: time=112, instructions executed=19, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=96, instructions executed=19, interruption = False
   INFO      ::     INSTR       Processing INC
   DEBUG     ::     ALU         Incrementing 4
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [5]
-  DEBUG     ::     SYSTEM      ControlUnit: time=119, instructions executed=20, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=102, instructions executed=20, interruption = False
   INFO      ::     INSTR       Processing JUMP ADDRESS 1
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [5]
-  DEBUG     ::     SYSTEM      ControlUnit: time=123, instructions executed=21, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=105, instructions executed=21, interruption = False
   INFO      ::     INSTR       Processing DUPLICATE
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [5, 5]
-  DEBUG     ::     SYSTEM      ControlUnit: time=129, instructions executed=22, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=110, instructions executed=22, interruption = False
   INFO      ::     INSTR       Processing READ
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [5, 108]
-  DEBUG     ::     SYSTEM      ControlUnit: time=136, instructions executed=23, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=116, instructions executed=23, interruption = False
   INFO      ::     INSTR       Processing DUPLICATE
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [5, 108, 108]
-  DEBUG     ::     SYSTEM      ControlUnit: time=142, instructions executed=24, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=121, instructions executed=24, interruption = False
   INFO      ::     INSTR       Processing PUSH VALUE 0
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [5, 108, 108, 0]
-  DEBUG     ::     SYSTEM      ControlUnit: time=147, instructions executed=25, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=125, instructions executed=25, interruption = False
   INFO      ::     INSTR       Processing COMPARE
   DEBUG     ::     ALU         Comparing 108 and 0
-  DEBUG     ::     INTER       Have 0 interruptions
-  DEBUG     ::     SYSTEM      Data stack: [5, 108]
-  DEBUG     ::     SYSTEM      ControlUnit: time=154, instructions executed=26, interruption = False
+  DEBUG     ::     SYSTEM      Data stack: [5, 108, 1]
+  DEBUG     ::     SYSTEM      ControlUnit: time=132, instructions executed=26, interruption = False
   INFO      ::     INSTR       Processing JEQ ADDRESS 11
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [5, 108]
-  DEBUG     ::     SYSTEM      ControlUnit: time=159, instructions executed=27, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=137, instructions executed=27, interruption = False
   INFO      ::     INSTR       Processing JUMP ADDRESS 8
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [5, 108]
-  DEBUG     ::     SYSTEM      ControlUnit: time=163, instructions executed=28, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=140, instructions executed=28, interruption = False
   INFO      ::     INSTR       Processing SAVE ADDRESS 1
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [5]
-  DEBUG     ::     SYSTEM      ControlUnit: time=170, instructions executed=29, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=146, instructions executed=29, interruption = False
   INFO      ::     INSTR       Processing INC
   DEBUG     ::     ALU         Incrementing 5
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [6]
-  DEBUG     ::     SYSTEM      ControlUnit: time=177, instructions executed=30, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=152, instructions executed=30, interruption = False
   INFO      ::     INSTR       Processing JUMP ADDRESS 1
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [6]
-  DEBUG     ::     SYSTEM      ControlUnit: time=181, instructions executed=31, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=155, instructions executed=31, interruption = False
   INFO      ::     INSTR       Processing DUPLICATE
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [6, 6]
-  DEBUG     ::     SYSTEM      ControlUnit: time=187, instructions executed=32, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=160, instructions executed=32, interruption = False
   INFO      ::     INSTR       Processing READ
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [6, 108]
-  DEBUG     ::     SYSTEM      ControlUnit: time=194, instructions executed=33, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=166, instructions executed=33, interruption = False
   INFO      ::     INSTR       Processing DUPLICATE
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [6, 108, 108]
-  DEBUG     ::     SYSTEM      ControlUnit: time=200, instructions executed=34, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=171, instructions executed=34, interruption = False
   INFO      ::     INSTR       Processing PUSH VALUE 0
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [6, 108, 108, 0]
-  DEBUG     ::     SYSTEM      ControlUnit: time=205, instructions executed=35, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=175, instructions executed=35, interruption = False
   INFO      ::     INSTR       Processing COMPARE
   DEBUG     ::     ALU         Comparing 108 and 0
-  DEBUG     ::     INTER       Have 0 interruptions
-  DEBUG     ::     SYSTEM      Data stack: [6, 108]
-  DEBUG     ::     SYSTEM      ControlUnit: time=212, instructions executed=36, interruption = False
+  DEBUG     ::     SYSTEM      Data stack: [6, 108, 1]
+  DEBUG     ::     SYSTEM      ControlUnit: time=182, instructions executed=36, interruption = False
   INFO      ::     INSTR       Processing JEQ ADDRESS 11
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [6, 108]
-  DEBUG     ::     SYSTEM      ControlUnit: time=217, instructions executed=37, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=187, instructions executed=37, interruption = False
   INFO      ::     INSTR       Processing JUMP ADDRESS 8
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [6, 108]
-  DEBUG     ::     SYSTEM      ControlUnit: time=221, instructions executed=38, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=190, instructions executed=38, interruption = False
   INFO      ::     INSTR       Processing SAVE ADDRESS 1
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [6]
-  DEBUG     ::     SYSTEM      ControlUnit: time=228, instructions executed=39, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=196, instructions executed=39, interruption = False
   INFO      ::     INSTR       Processing INC
   DEBUG     ::     ALU         Incrementing 6
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [7]
-  DEBUG     ::     SYSTEM      ControlUnit: time=235, instructions executed=40, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=202, instructions executed=40, interruption = False
   INFO      ::     INSTR       Processing JUMP ADDRESS 1
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [7]
-  DEBUG     ::     SYSTEM      ControlUnit: time=239, instructions executed=41, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=205, instructions executed=41, interruption = False
   INFO      ::     INSTR       Processing DUPLICATE
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [7, 7]
-  DEBUG     ::     SYSTEM      ControlUnit: time=245, instructions executed=42, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=210, instructions executed=42, interruption = False
   INFO      ::     INSTR       Processing READ
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [7, 111]
-  DEBUG     ::     SYSTEM      ControlUnit: time=252, instructions executed=43, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=216, instructions executed=43, interruption = False
   INFO      ::     INSTR       Processing DUPLICATE
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [7, 111, 111]
-  DEBUG     ::     SYSTEM      ControlUnit: time=258, instructions executed=44, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=221, instructions executed=44, interruption = False
   INFO      ::     INSTR       Processing PUSH VALUE 0
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [7, 111, 111, 0]
-  DEBUG     ::     SYSTEM      ControlUnit: time=263, instructions executed=45, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=225, instructions executed=45, interruption = False
   INFO      ::     INSTR       Processing COMPARE
   DEBUG     ::     ALU         Comparing 111 and 0
-  DEBUG     ::     INTER       Have 0 interruptions
-  DEBUG     ::     SYSTEM      Data stack: [7, 111]
-  DEBUG     ::     SYSTEM      ControlUnit: time=270, instructions executed=46, interruption = False
+  DEBUG     ::     SYSTEM      Data stack: [7, 111, 1]
+  DEBUG     ::     SYSTEM      ControlUnit: time=232, instructions executed=46, interruption = False
   INFO      ::     INSTR       Processing JEQ ADDRESS 11
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [7, 111]
-  DEBUG     ::     SYSTEM      ControlUnit: time=275, instructions executed=47, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=237, instructions executed=47, interruption = False
   INFO      ::     INSTR       Processing JUMP ADDRESS 8
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [7, 111]
-  DEBUG     ::     SYSTEM      ControlUnit: time=279, instructions executed=48, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=240, instructions executed=48, interruption = False
   INFO      ::     INSTR       Processing SAVE ADDRESS 1
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [7]
-  DEBUG     ::     SYSTEM      ControlUnit: time=286, instructions executed=49, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=246, instructions executed=49, interruption = False
   INFO      ::     INSTR       Processing INC
   DEBUG     ::     ALU         Incrementing 7
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [8]
-  DEBUG     ::     SYSTEM      ControlUnit: time=293, instructions executed=50, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=252, instructions executed=50, interruption = False
   INFO      ::     INSTR       Processing JUMP ADDRESS 1
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [8]
-  DEBUG     ::     SYSTEM      ControlUnit: time=297, instructions executed=51, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=255, instructions executed=51, interruption = False
   INFO      ::     INSTR       Processing DUPLICATE
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [8, 8]
-  DEBUG     ::     SYSTEM      ControlUnit: time=303, instructions executed=52, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=260, instructions executed=52, interruption = False
   INFO      ::     INSTR       Processing READ
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [8, 44]
-  DEBUG     ::     SYSTEM      ControlUnit: time=310, instructions executed=53, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=266, instructions executed=53, interruption = False
   INFO      ::     INSTR       Processing DUPLICATE
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [8, 44, 44]
-  DEBUG     ::     SYSTEM      ControlUnit: time=316, instructions executed=54, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=271, instructions executed=54, interruption = False
   INFO      ::     INSTR       Processing PUSH VALUE 0
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [8, 44, 44, 0]
-  DEBUG     ::     SYSTEM      ControlUnit: time=321, instructions executed=55, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=275, instructions executed=55, interruption = False
   INFO      ::     INSTR       Processing COMPARE
   DEBUG     ::     ALU         Comparing 44 and 0
-  DEBUG     ::     INTER       Have 0 interruptions
-  DEBUG     ::     SYSTEM      Data stack: [8, 44]
-  DEBUG     ::     SYSTEM      ControlUnit: time=328, instructions executed=56, interruption = False
+  DEBUG     ::     SYSTEM      Data stack: [8, 44, 1]
+  DEBUG     ::     SYSTEM      ControlUnit: time=282, instructions executed=56, interruption = False
   INFO      ::     INSTR       Processing JEQ ADDRESS 11
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [8, 44]
-  DEBUG     ::     SYSTEM      ControlUnit: time=333, instructions executed=57, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=287, instructions executed=57, interruption = False
   INFO      ::     INSTR       Processing JUMP ADDRESS 8
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [8, 44]
-  DEBUG     ::     SYSTEM      ControlUnit: time=337, instructions executed=58, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=290, instructions executed=58, interruption = False
   INFO      ::     INSTR       Processing SAVE ADDRESS 1
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [8]
-  DEBUG     ::     SYSTEM      ControlUnit: time=344, instructions executed=59, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=296, instructions executed=59, interruption = False
   INFO      ::     INSTR       Processing INC
   DEBUG     ::     ALU         Incrementing 8
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [9]
-  DEBUG     ::     SYSTEM      ControlUnit: time=351, instructions executed=60, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=302, instructions executed=60, interruption = False
   INFO      ::     INSTR       Processing JUMP ADDRESS 1
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [9]
-  DEBUG     ::     SYSTEM      ControlUnit: time=355, instructions executed=61, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=305, instructions executed=61, interruption = False
   INFO      ::     INSTR       Processing DUPLICATE
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [9, 9]
-  DEBUG     ::     SYSTEM      ControlUnit: time=361, instructions executed=62, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=310, instructions executed=62, interruption = False
   INFO      ::     INSTR       Processing READ
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [9, 32]
-  DEBUG     ::     SYSTEM      ControlUnit: time=368, instructions executed=63, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=316, instructions executed=63, interruption = False
   INFO      ::     INSTR       Processing DUPLICATE
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [9, 32, 32]
-  DEBUG     ::     SYSTEM      ControlUnit: time=374, instructions executed=64, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=321, instructions executed=64, interruption = False
   INFO      ::     INSTR       Processing PUSH VALUE 0
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [9, 32, 32, 0]
-  DEBUG     ::     SYSTEM      ControlUnit: time=379, instructions executed=65, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=325, instructions executed=65, interruption = False
   INFO      ::     INSTR       Processing COMPARE
   DEBUG     ::     ALU         Comparing 32 and 0
-  DEBUG     ::     INTER       Have 0 interruptions
-  DEBUG     ::     SYSTEM      Data stack: [9, 32]
-  DEBUG     ::     SYSTEM      ControlUnit: time=386, instructions executed=66, interruption = False
+  DEBUG     ::     SYSTEM      Data stack: [9, 32, 1]
+  DEBUG     ::     SYSTEM      ControlUnit: time=332, instructions executed=66, interruption = False
   INFO      ::     INSTR       Processing JEQ ADDRESS 11
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [9, 32]
-  DEBUG     ::     SYSTEM      ControlUnit: time=391, instructions executed=67, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=337, instructions executed=67, interruption = False
   INFO      ::     INSTR       Processing JUMP ADDRESS 8
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [9, 32]
-  DEBUG     ::     SYSTEM      ControlUnit: time=395, instructions executed=68, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=340, instructions executed=68, interruption = False
   INFO      ::     INSTR       Processing SAVE ADDRESS 1
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [9]
-  DEBUG     ::     SYSTEM      ControlUnit: time=402, instructions executed=69, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=346, instructions executed=69, interruption = False
   INFO      ::     INSTR       Processing INC
   DEBUG     ::     ALU         Incrementing 9
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [10]
-  DEBUG     ::     SYSTEM      ControlUnit: time=409, instructions executed=70, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=352, instructions executed=70, interruption = False
   INFO      ::     INSTR       Processing JUMP ADDRESS 1
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [10]
-  DEBUG     ::     SYSTEM      ControlUnit: time=413, instructions executed=71, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=355, instructions executed=71, interruption = False
   INFO      ::     INSTR       Processing DUPLICATE
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [10, 10]
-  DEBUG     ::     SYSTEM      ControlUnit: time=419, instructions executed=72, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=360, instructions executed=72, interruption = False
   INFO      ::     INSTR       Processing READ
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [10, 87]
-  DEBUG     ::     SYSTEM      ControlUnit: time=426, instructions executed=73, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=366, instructions executed=73, interruption = False
   INFO      ::     INSTR       Processing DUPLICATE
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [10, 87, 87]
-  DEBUG     ::     SYSTEM      ControlUnit: time=432, instructions executed=74, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=371, instructions executed=74, interruption = False
   INFO      ::     INSTR       Processing PUSH VALUE 0
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [10, 87, 87, 0]
-  DEBUG     ::     SYSTEM      ControlUnit: time=437, instructions executed=75, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=375, instructions executed=75, interruption = False
   INFO      ::     INSTR       Processing COMPARE
   DEBUG     ::     ALU         Comparing 87 and 0
-  DEBUG     ::     INTER       Have 0 interruptions
-  DEBUG     ::     SYSTEM      Data stack: [10, 87]
-  DEBUG     ::     SYSTEM      ControlUnit: time=444, instructions executed=76, interruption = False
+  DEBUG     ::     SYSTEM      Data stack: [10, 87, 1]
+  DEBUG     ::     SYSTEM      ControlUnit: time=382, instructions executed=76, interruption = False
   INFO      ::     INSTR       Processing JEQ ADDRESS 11
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [10, 87]
-  DEBUG     ::     SYSTEM      ControlUnit: time=449, instructions executed=77, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=387, instructions executed=77, interruption = False
   INFO      ::     INSTR       Processing JUMP ADDRESS 8
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [10, 87]
-  DEBUG     ::     SYSTEM      ControlUnit: time=453, instructions executed=78, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=390, instructions executed=78, interruption = False
   INFO      ::     INSTR       Processing SAVE ADDRESS 1
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [10]
-  DEBUG     ::     SYSTEM      ControlUnit: time=460, instructions executed=79, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=396, instructions executed=79, interruption = False
   INFO      ::     INSTR       Processing INC
   DEBUG     ::     ALU         Incrementing 10
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [11]
-  DEBUG     ::     SYSTEM      ControlUnit: time=467, instructions executed=80, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=402, instructions executed=80, interruption = False
   INFO      ::     INSTR       Processing JUMP ADDRESS 1
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [11]
-  DEBUG     ::     SYSTEM      ControlUnit: time=471, instructions executed=81, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=405, instructions executed=81, interruption = False
   INFO      ::     INSTR       Processing DUPLICATE
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [11, 11]
-  DEBUG     ::     SYSTEM      ControlUnit: time=477, instructions executed=82, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=410, instructions executed=82, interruption = False
   INFO      ::     INSTR       Processing READ
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [11, 111]
-  DEBUG     ::     SYSTEM      ControlUnit: time=484, instructions executed=83, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=416, instructions executed=83, interruption = False
   INFO      ::     INSTR       Processing DUPLICATE
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [11, 111, 111]
-  DEBUG     ::     SYSTEM      ControlUnit: time=490, instructions executed=84, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=421, instructions executed=84, interruption = False
   INFO      ::     INSTR       Processing PUSH VALUE 0
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [11, 111, 111, 0]
-  DEBUG     ::     SYSTEM      ControlUnit: time=495, instructions executed=85, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=425, instructions executed=85, interruption = False
   INFO      ::     INSTR       Processing COMPARE
   DEBUG     ::     ALU         Comparing 111 and 0
-  DEBUG     ::     INTER       Have 0 interruptions
-  DEBUG     ::     SYSTEM      Data stack: [11, 111]
-  DEBUG     ::     SYSTEM      ControlUnit: time=502, instructions executed=86, interruption = False
+  DEBUG     ::     SYSTEM      Data stack: [11, 111, 1]
+  DEBUG     ::     SYSTEM      ControlUnit: time=432, instructions executed=86, interruption = False
   INFO      ::     INSTR       Processing JEQ ADDRESS 11
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [11, 111]
-  DEBUG     ::     SYSTEM      ControlUnit: time=507, instructions executed=87, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=437, instructions executed=87, interruption = False
   INFO      ::     INSTR       Processing JUMP ADDRESS 8
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [11, 111]
-  DEBUG     ::     SYSTEM      ControlUnit: time=511, instructions executed=88, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=440, instructions executed=88, interruption = False
   INFO      ::     INSTR       Processing SAVE ADDRESS 1
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [11]
-  DEBUG     ::     SYSTEM      ControlUnit: time=518, instructions executed=89, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=446, instructions executed=89, interruption = False
   INFO      ::     INSTR       Processing INC
   DEBUG     ::     ALU         Incrementing 11
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [12]
-  DEBUG     ::     SYSTEM      ControlUnit: time=525, instructions executed=90, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=452, instructions executed=90, interruption = False
   INFO      ::     INSTR       Processing JUMP ADDRESS 1
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [12]
-  DEBUG     ::     SYSTEM      ControlUnit: time=529, instructions executed=91, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=455, instructions executed=91, interruption = False
   INFO      ::     INSTR       Processing DUPLICATE
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [12, 12]
-  DEBUG     ::     SYSTEM      ControlUnit: time=535, instructions executed=92, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=460, instructions executed=92, interruption = False
   INFO      ::     INSTR       Processing READ
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [12, 114]
-  DEBUG     ::     SYSTEM      ControlUnit: time=542, instructions executed=93, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=466, instructions executed=93, interruption = False
   INFO      ::     INSTR       Processing DUPLICATE
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [12, 114, 114]
-  DEBUG     ::     SYSTEM      ControlUnit: time=548, instructions executed=94, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=471, instructions executed=94, interruption = False
   INFO      ::     INSTR       Processing PUSH VALUE 0
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [12, 114, 114, 0]
-  DEBUG     ::     SYSTEM      ControlUnit: time=553, instructions executed=95, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=475, instructions executed=95, interruption = False
   INFO      ::     INSTR       Processing COMPARE
   DEBUG     ::     ALU         Comparing 114 and 0
-  DEBUG     ::     INTER       Have 0 interruptions
-  DEBUG     ::     SYSTEM      Data stack: [12, 114]
-  DEBUG     ::     SYSTEM      ControlUnit: time=560, instructions executed=96, interruption = False
+  DEBUG     ::     SYSTEM      Data stack: [12, 114, 1]
+  DEBUG     ::     SYSTEM      ControlUnit: time=482, instructions executed=96, interruption = False
   INFO      ::     INSTR       Processing JEQ ADDRESS 11
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [12, 114]
-  DEBUG     ::     SYSTEM      ControlUnit: time=565, instructions executed=97, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=487, instructions executed=97, interruption = False
   INFO      ::     INSTR       Processing JUMP ADDRESS 8
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [12, 114]
-  DEBUG     ::     SYSTEM      ControlUnit: time=569, instructions executed=98, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=490, instructions executed=98, interruption = False
   INFO      ::     INSTR       Processing SAVE ADDRESS 1
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [12]
-  DEBUG     ::     SYSTEM      ControlUnit: time=576, instructions executed=99, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=496, instructions executed=99, interruption = False
   INFO      ::     INSTR       Processing INC
   DEBUG     ::     ALU         Incrementing 12
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [13]
-  DEBUG     ::     SYSTEM      ControlUnit: time=583, instructions executed=100, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=502, instructions executed=100, interruption = False
   INFO      ::     INSTR       Processing JUMP ADDRESS 1
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [13]
-  DEBUG     ::     SYSTEM      ControlUnit: time=587, instructions executed=101, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=505, instructions executed=101, interruption = False
   INFO      ::     INSTR       Processing DUPLICATE
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [13, 13]
-  DEBUG     ::     SYSTEM      ControlUnit: time=593, instructions executed=102, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=510, instructions executed=102, interruption = False
   INFO      ::     INSTR       Processing READ
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [13, 108]
-  DEBUG     ::     SYSTEM      ControlUnit: time=600, instructions executed=103, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=516, instructions executed=103, interruption = False
   INFO      ::     INSTR       Processing DUPLICATE
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [13, 108, 108]
-  DEBUG     ::     SYSTEM      ControlUnit: time=606, instructions executed=104, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=521, instructions executed=104, interruption = False
   INFO      ::     INSTR       Processing PUSH VALUE 0
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [13, 108, 108, 0]
-  DEBUG     ::     SYSTEM      ControlUnit: time=611, instructions executed=105, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=525, instructions executed=105, interruption = False
   INFO      ::     INSTR       Processing COMPARE
   DEBUG     ::     ALU         Comparing 108 and 0
-  DEBUG     ::     INTER       Have 0 interruptions
-  DEBUG     ::     SYSTEM      Data stack: [13, 108]
-  DEBUG     ::     SYSTEM      ControlUnit: time=618, instructions executed=106, interruption = False
+  DEBUG     ::     SYSTEM      Data stack: [13, 108, 1]
+  DEBUG     ::     SYSTEM      ControlUnit: time=532, instructions executed=106, interruption = False
   INFO      ::     INSTR       Processing JEQ ADDRESS 11
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [13, 108]
-  DEBUG     ::     SYSTEM      ControlUnit: time=623, instructions executed=107, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=537, instructions executed=107, interruption = False
   INFO      ::     INSTR       Processing JUMP ADDRESS 8
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [13, 108]
-  DEBUG     ::     SYSTEM      ControlUnit: time=627, instructions executed=108, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=540, instructions executed=108, interruption = False
   INFO      ::     INSTR       Processing SAVE ADDRESS 1
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [13]
-  DEBUG     ::     SYSTEM      ControlUnit: time=634, instructions executed=109, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=546, instructions executed=109, interruption = False
   INFO      ::     INSTR       Processing INC
   DEBUG     ::     ALU         Incrementing 13
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [14]
-  DEBUG     ::     SYSTEM      ControlUnit: time=641, instructions executed=110, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=552, instructions executed=110, interruption = False
   INFO      ::     INSTR       Processing JUMP ADDRESS 1
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [14]
-  DEBUG     ::     SYSTEM      ControlUnit: time=645, instructions executed=111, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=555, instructions executed=111, interruption = False
   INFO      ::     INSTR       Processing DUPLICATE
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [14, 14]
-  DEBUG     ::     SYSTEM      ControlUnit: time=651, instructions executed=112, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=560, instructions executed=112, interruption = False
   INFO      ::     INSTR       Processing READ
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [14, 100]
-  DEBUG     ::     SYSTEM      ControlUnit: time=658, instructions executed=113, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=566, instructions executed=113, interruption = False
   INFO      ::     INSTR       Processing DUPLICATE
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [14, 100, 100]
-  DEBUG     ::     SYSTEM      ControlUnit: time=664, instructions executed=114, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=571, instructions executed=114, interruption = False
   INFO      ::     INSTR       Processing PUSH VALUE 0
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [14, 100, 100, 0]
-  DEBUG     ::     SYSTEM      ControlUnit: time=669, instructions executed=115, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=575, instructions executed=115, interruption = False
   INFO      ::     INSTR       Processing COMPARE
   DEBUG     ::     ALU         Comparing 100 and 0
-  DEBUG     ::     INTER       Have 0 interruptions
-  DEBUG     ::     SYSTEM      Data stack: [14, 100]
-  DEBUG     ::     SYSTEM      ControlUnit: time=676, instructions executed=116, interruption = False
+  DEBUG     ::     SYSTEM      Data stack: [14, 100, 1]
+  DEBUG     ::     SYSTEM      ControlUnit: time=582, instructions executed=116, interruption = False
   INFO      ::     INSTR       Processing JEQ ADDRESS 11
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [14, 100]
-  DEBUG     ::     SYSTEM      ControlUnit: time=681, instructions executed=117, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=587, instructions executed=117, interruption = False
   INFO      ::     INSTR       Processing JUMP ADDRESS 8
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [14, 100]
-  DEBUG     ::     SYSTEM      ControlUnit: time=685, instructions executed=118, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=590, instructions executed=118, interruption = False
   INFO      ::     INSTR       Processing SAVE ADDRESS 1
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [14]
-  DEBUG     ::     SYSTEM      ControlUnit: time=692, instructions executed=119, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=596, instructions executed=119, interruption = False
   INFO      ::     INSTR       Processing INC
   DEBUG     ::     ALU         Incrementing 14
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [15]
-  DEBUG     ::     SYSTEM      ControlUnit: time=699, instructions executed=120, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=602, instructions executed=120, interruption = False
   INFO      ::     INSTR       Processing JUMP ADDRESS 1
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [15]
-  DEBUG     ::     SYSTEM      ControlUnit: time=703, instructions executed=121, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=605, instructions executed=121, interruption = False
   INFO      ::     INSTR       Processing DUPLICATE
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [15, 15]
-  DEBUG     ::     SYSTEM      ControlUnit: time=709, instructions executed=122, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=610, instructions executed=122, interruption = False
   INFO      ::     INSTR       Processing READ
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [15, 33]
-  DEBUG     ::     SYSTEM      ControlUnit: time=716, instructions executed=123, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=616, instructions executed=123, interruption = False
   INFO      ::     INSTR       Processing DUPLICATE
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [15, 33, 33]
-  DEBUG     ::     SYSTEM      ControlUnit: time=722, instructions executed=124, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=621, instructions executed=124, interruption = False
   INFO      ::     INSTR       Processing PUSH VALUE 0
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [15, 33, 33, 0]
-  DEBUG     ::     SYSTEM      ControlUnit: time=727, instructions executed=125, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=625, instructions executed=125, interruption = False
   INFO      ::     INSTR       Processing COMPARE
   DEBUG     ::     ALU         Comparing 33 and 0
-  DEBUG     ::     INTER       Have 0 interruptions
-  DEBUG     ::     SYSTEM      Data stack: [15, 33]
-  DEBUG     ::     SYSTEM      ControlUnit: time=734, instructions executed=126, interruption = False
+  DEBUG     ::     SYSTEM      Data stack: [15, 33, 1]
+  DEBUG     ::     SYSTEM      ControlUnit: time=632, instructions executed=126, interruption = False
   INFO      ::     INSTR       Processing JEQ ADDRESS 11
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [15, 33]
-  DEBUG     ::     SYSTEM      ControlUnit: time=739, instructions executed=127, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=637, instructions executed=127, interruption = False
   INFO      ::     INSTR       Processing JUMP ADDRESS 8
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [15, 33]
-  DEBUG     ::     SYSTEM      ControlUnit: time=743, instructions executed=128, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=640, instructions executed=128, interruption = False
   INFO      ::     INSTR       Processing SAVE ADDRESS 1
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [15]
-  DEBUG     ::     SYSTEM      ControlUnit: time=750, instructions executed=129, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=646, instructions executed=129, interruption = False
   INFO      ::     INSTR       Processing INC
   DEBUG     ::     ALU         Incrementing 15
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [16]
-  DEBUG     ::     SYSTEM      ControlUnit: time=757, instructions executed=130, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=652, instructions executed=130, interruption = False
   INFO      ::     INSTR       Processing JUMP ADDRESS 1
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [16]
-  DEBUG     ::     SYSTEM      ControlUnit: time=761, instructions executed=131, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=655, instructions executed=131, interruption = False
   INFO      ::     INSTR       Processing DUPLICATE
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [16, 16]
-  DEBUG     ::     SYSTEM      ControlUnit: time=767, instructions executed=132, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=660, instructions executed=132, interruption = False
   INFO      ::     INSTR       Processing READ
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [16, 10]
-  DEBUG     ::     SYSTEM      ControlUnit: time=774, instructions executed=133, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=666, instructions executed=133, interruption = False
   INFO      ::     INSTR       Processing DUPLICATE
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [16, 10, 10]
-  DEBUG     ::     SYSTEM      ControlUnit: time=780, instructions executed=134, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=671, instructions executed=134, interruption = False
   INFO      ::     INSTR       Processing PUSH VALUE 0
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [16, 10, 10, 0]
-  DEBUG     ::     SYSTEM      ControlUnit: time=785, instructions executed=135, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=675, instructions executed=135, interruption = False
   INFO      ::     INSTR       Processing COMPARE
   DEBUG     ::     ALU         Comparing 10 and 0
-  DEBUG     ::     INTER       Have 0 interruptions
-  DEBUG     ::     SYSTEM      Data stack: [16, 10]
-  DEBUG     ::     SYSTEM      ControlUnit: time=792, instructions executed=136, interruption = False
+  DEBUG     ::     SYSTEM      Data stack: [16, 10, 1]
+  DEBUG     ::     SYSTEM      ControlUnit: time=682, instructions executed=136, interruption = False
   INFO      ::     INSTR       Processing JEQ ADDRESS 11
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [16, 10]
-  DEBUG     ::     SYSTEM      ControlUnit: time=797, instructions executed=137, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=687, instructions executed=137, interruption = False
   INFO      ::     INSTR       Processing JUMP ADDRESS 8
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [16, 10]
-  DEBUG     ::     SYSTEM      ControlUnit: time=801, instructions executed=138, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=690, instructions executed=138, interruption = False
   INFO      ::     INSTR       Processing SAVE ADDRESS 1
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [16]
-  DEBUG     ::     SYSTEM      ControlUnit: time=808, instructions executed=139, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=696, instructions executed=139, interruption = False
   INFO      ::     INSTR       Processing INC
   DEBUG     ::     ALU         Incrementing 16
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [17]
-  DEBUG     ::     SYSTEM      ControlUnit: time=815, instructions executed=140, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=702, instructions executed=140, interruption = False
   INFO      ::     INSTR       Processing JUMP ADDRESS 1
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [17]
-  DEBUG     ::     SYSTEM      ControlUnit: time=819, instructions executed=141, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=705, instructions executed=141, interruption = False
   INFO      ::     INSTR       Processing DUPLICATE
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [17, 17]
-  DEBUG     ::     SYSTEM      ControlUnit: time=825, instructions executed=142, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=710, instructions executed=142, interruption = False
   INFO      ::     INSTR       Processing READ
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [17, 0]
-  DEBUG     ::     SYSTEM      ControlUnit: time=832, instructions executed=143, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=716, instructions executed=143, interruption = False
   INFO      ::     INSTR       Processing DUPLICATE
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [17, 0, 0]
-  DEBUG     ::     SYSTEM      ControlUnit: time=838, instructions executed=144, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=721, instructions executed=144, interruption = False
   INFO      ::     INSTR       Processing PUSH VALUE 0
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [17, 0, 0, 0]
-  DEBUG     ::     SYSTEM      ControlUnit: time=843, instructions executed=145, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=725, instructions executed=145, interruption = False
   INFO      ::     INSTR       Processing COMPARE
   DEBUG     ::     ALU         Comparing 0 and 0
-  DEBUG     ::     INTER       Have 0 interruptions
-  DEBUG     ::     SYSTEM      Data stack: [17, 0]
-  DEBUG     ::     SYSTEM      ControlUnit: time=850, instructions executed=146, interruption = False
+  DEBUG     ::     SYSTEM      Data stack: [17, 0, 0]
+  DEBUG     ::     SYSTEM      ControlUnit: time=732, instructions executed=146, interruption = False
   INFO      ::     INSTR       Processing JEQ ADDRESS 11
-  DEBUG     ::     INTER       Have 0 interruptions
   DEBUG     ::     SYSTEM      Data stack: [17, 0]
-  DEBUG     ::     SYSTEM      ControlUnit: time=855, instructions executed=147, interruption = False
+  DEBUG     ::     SYSTEM      ControlUnit: time=737, instructions executed=147, interruption = False
   INFO      ::     INSTR       Processing HALT
-  DEBUG     ::     INTER       Have 1 interruptions
   DEBUG     ::     INTER       Processing Interruption: HALT
   INFO      ::     SYSTEM      Halting
-  INFO      ::     SYSTEM      Execution finished, state: ControlUnit: time=862, instructions executed=148, interruption = False
+  INFO      ::     SYSTEM      Execution finished, state: ControlUnit: time=743, instructions executed=148, interruption = False
   INFO      ::     INPUT       Turning off input device.
   INFO      ::     OUTPUT      Turning off output device.
