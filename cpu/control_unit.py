@@ -6,6 +6,7 @@ from asm.instruction import Instruction, OpCode, OpType
 from io_managers.logger import Logger, LogLevel, Place
 from exceptions import EmptyStackException
 
+
 class ControlUnit:
     def __init__(self):
         self._time: int = 0
@@ -16,7 +17,6 @@ class ControlUnit:
 
         self._data_stack = Stack()
         self._return_stack = Stack()
-        self._interruptions_stack = Stack()
         self.alu = ALU()
 
         self.instructions_memory = None
@@ -24,6 +24,7 @@ class ControlUnit:
 
         self.logger = None
 
+        self.interruption = None
         self.interruption_vec = None
         self.interruption_times = []
 
@@ -66,48 +67,53 @@ class ControlUnit:
         return self._instruction_counter
 
     def handle_interruption(self):
-        self.logger.log(LogLevel.DEBUG, Place.INTER, f"Have {self._interruptions_stack.size()} interruptions")
+        if self.interruption is None:
+            return
 
-        while not self._interruptions_stack.is_empty():
-            interruption: Interruption = self._interruptions_stack.pop()
-            self.tick()
+        self._interruption_flag = True
+        self.tick()
 
-            self._interruption_flag = True
-            self.tick()
+        self.logger.log(LogLevel.DEBUG, Place.INTER, f"Processing {self.interruption}")
 
-            self.logger.log(LogLevel.DEBUG, Place.INTER, f"Processing {interruption}")
-
-            match interruption.interruption_type:
-                case InterruptionType.INPUT:
-                    if self.interruption_vec is None:
-                        continue
-
-                    self._return_stack.push(self._command_pointer)
+        match self.interruption.interruption_type:
+            case InterruptionType.INPUT:
+                if self.interruption_vec is None:
+                    self.interruption = None
+                    self._interruption_flag = False
                     self.tick()
+                    return
 
-                    self._command_pointer = self.interruption_vec
-                    self.tick()
+                self._return_stack.push(self._command_pointer)
+                self.tick()
 
+                self._command_pointer = self.interruption_vec
+                self.tick()
+
+                flow_changed = self.handle_command()
+                while not flow_changed:
+                    self.increment_command_pointer()
+                    self.increment_instruction_counter()
                     flow_changed = self.handle_command()
-                    while not flow_changed:
-                        self.increment_command_pointer()
-                        self.increment_instruction_counter()
-                        flow_changed = self.handle_command()
 
-                case InterruptionType.ERROR:
-                    self.logger.log(LogLevel.ERROR, Place.SYSTEM, f"Error: {interruption.message}")
+                    if self.interruption_times and self._time > self.interruption_times[0]:
+                        self.interruption_times.pop(0)
+                        self.data_memory.read(0)
 
-                    interruption_halt = Interruption(InterruptionType.HALT)
-                    self._interruptions_stack.push(interruption_halt)
-                    self.tick()
+            case InterruptionType.ERROR:
+                self.logger.log(LogLevel.ERROR, Place.SYSTEM, f"Error: {self.interruption.message}")
 
-                case InterruptionType.HALT:
-                    self._exit_flag = True
-                    self.tick()
+                self._exit_flag = True
+                self.tick()
 
-                    self.logger.log(LogLevel.INFO, Place.SYSTEM, "Halting")
-                    break
+                self.logger.log(LogLevel.INFO, Place.SYSTEM, "Halting")
 
+            case InterruptionType.HALT:
+                self._exit_flag = True
+                self.tick()
+
+                self.logger.log(LogLevel.INFO, Place.SYSTEM, "Halting")
+
+        self.interruption = None
         self._interruption_flag = False
         self.tick()
 
@@ -140,8 +146,7 @@ class ControlUnit:
 
             case OpCode.POP:
                 if self._data_stack.is_empty():
-                    interruption = Interruption(InterruptionType.ERROR, "Stack is empty")
-                    self._interruptions_stack.push(interruption)
+                    self.interruption = Interruption(InterruptionType.ERROR, "Stack is empty")
                     self.tick()
 
                 else:
@@ -176,6 +181,8 @@ class ControlUnit:
 
                 self.alu.compare(a, b)
                 self.tick()
+                self._data_stack.push(self.alu.result)
+                self.tick()
 
             case OpCode.JUMP:
                 self._command_pointer = operand
@@ -183,7 +190,9 @@ class ControlUnit:
                 flow_changed = True
 
             case OpCode.JLA:
-                if not self.alu.zero and not self.alu.negative:
+                value = self._data_stack.pop()
+                self.tick()
+                if value == 1:
                     self._command_pointer = operand
                     self.tick()
                     flow_changed = True
@@ -191,7 +200,9 @@ class ControlUnit:
                 self.tick()
 
             case OpCode.JLE:
-                if self.alu.negative:
+                value = self._data_stack.pop()
+                self.tick()
+                if value == -1:
                     self._command_pointer = operand
                     self.tick()
                     flow_changed = True
@@ -199,7 +210,9 @@ class ControlUnit:
                 self.tick()
 
             case OpCode.JEQ:
-                if self.alu.zero:
+                value = self._data_stack.pop()
+                self.tick()
+                if value == 0:
                     self._command_pointer = operand
                     self.tick()
                     flow_changed = True
@@ -207,7 +220,9 @@ class ControlUnit:
                 self.tick()
 
             case OpCode.JNE:
-                if not self.alu.zero:
+                value = self._data_stack.pop()
+                self.tick()
+                if value != 0:
                     self._command_pointer = operand
                     self.tick()
                     flow_changed = True
@@ -260,8 +275,7 @@ class ControlUnit:
                 self.tick()
 
                 if b == 0:
-                    interruption = Interruption(InterruptionType.ERROR, "Division by zero")
-                    self._interruptions_stack.push(interruption)
+                    self.interruption = Interruption(InterruptionType.ERROR, "Division by zero")
                     self.tick()
                 else:
                     self.logger.log(LogLevel.DEBUG, Place.ALU, f"Dividing {a} and {b}")
@@ -322,8 +336,7 @@ class ControlUnit:
                     self.tick()
 
                 except EmptyStackException:
-                    interruption = Interruption(InterruptionType.ERROR, "Stack is empty")
-                    self._interruptions_stack.push(interruption)
+                    self.interruption = Interruption(InterruptionType.ERROR, "Stack is empty")
                     self.tick()
 
                 self.tick()
@@ -334,16 +347,14 @@ class ControlUnit:
                 flow_changed = True
 
             case OpCode.HALT:
-                interruption = Interruption(InterruptionType.HALT)
-                self._interruptions_stack.push(interruption)
+                self.interruption = Interruption(InterruptionType.HALT)
                 self.tick()
 
             case OpCode.NOP:
                 self.tick()
 
             case _:
-                interruption = Interruption(InterruptionType.ERROR, f"Unknown opcode: {opcode}")
-                self._interruptions_stack.push(interruption)
+                self.interruption = Interruption(InterruptionType.ERROR, f"Unknown opcode: {opcode}")
                 self.tick()
 
         return flow_changed
@@ -363,8 +374,7 @@ class ControlUnit:
                 self.interruption_times.pop(0)
                 self.tick()
 
-                interruption = Interruption(InterruptionType.INPUT)
-                self._interruptions_stack.push(interruption)
+                self.interruption = Interruption(InterruptionType.INPUT)
                 self.tick()
 
             self.handle_interruption()
